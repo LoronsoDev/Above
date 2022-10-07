@@ -4,4 +4,4 @@ bin/
 bin-int/
 
 	#files
-.user
+*.user
