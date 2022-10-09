@@ -8,7 +8,12 @@ extern Above::Application* Above::CreateApplication();
 
 int main(int argc, char ** argv)
 {
-	printf("ABOVE ENGINE STARTED...");
+	Above::Log::Init();
+	AB_CORE_INFO("Inititialized ABOVE engine");
+
+	AB_CORE_WARN("Initialized core log!");
+	AB_WARN("Initialized client log!");
+
 	auto app = Above::CreateApplication();
 	app->Run();
 	delete app;
