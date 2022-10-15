@@ -1,3 +1,5 @@
+#include "abpch.h"
+
 #include <Above.h>
 
 class Sandbox : public Above::Application
@@ -9,5 +11,7 @@ public:
 
 Above::Application* Above::CreateApplication()
 {
+	AB_INFO("APPLICATION INITIALIZED");
+	
 	return new Sandbox;
 }

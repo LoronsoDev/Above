@@ -1,42 +1,63 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Archivos de origen">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Above">
+      <UniqueIdentifier>{D2DDCE0C-3EF2-F6BD-0774-9A1D7347F3EE}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Above\Events">
+      <UniqueIdentifier>{76894A47-62EC-D9EB-0B72-12A2F7B3A56E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de recursos">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Above.h" />
     <ClInclude Include="src\Above\Application.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Above</Filter>
     </ClInclude>
     <ClInclude Include="src\Above\Core.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Above.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Above</Filter>
     </ClInclude>
     <ClInclude Include="src\Above\EntryPoint.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Above</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Above\Events\ApplicationEvent.h">
+      <Filter>Above\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Above\Events\Event.h">
+      <Filter>Above\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Above\Events\KeyEvent.h">
+      <Filter>Above\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Above\Events\MouseEvent.h">
+      <Filter>Above\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Above\Log.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Above</Filter>
     </ClInclude>
+    <ClInclude Include="src\Above\Window.h">
+      <Filter>Above</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\abpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Above\Application.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Above</Filter>
     </ClCompile>
     <ClCompile Include="src\Above\Log.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Above</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\abpch.cpp" />
   </ItemGroup>
 </Project>

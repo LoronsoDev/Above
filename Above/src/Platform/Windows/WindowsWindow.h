@@ -1,0 +1,44 @@
+#pragma once
+
+#include "Above/Window.h"
+
+#include <GLFW/glfw3.h>
+
+namespace Above
+{
+	class WindowsWindow : public Window
+	{
+	public:
+		WindowsWindow(const WindowProps& props);
+		virtual ~WindowsWindow();
+
+		void OnUpdate() override;
+
+		inline unsigned GetWidth() const override { return m_Data.Width;  }
+		inline unsigned GetHeight() const override { return m_Data.Height;  }
+
+		//Window attribs
+		inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback;  }
+		void SetVSync(bool enabled) override;
+		bool IsVSync() const override;
+
+	private:
+		virtual void Init(const WindowProps& props);
+		virtual void Shutdown();
+
+	private:
+		GLFWwindow* m_Window;
+
+		struct WindowData
+		{
+			std::string Title;
+			unsigned Width, Height;
+			bool VSync;
+
+			EventCallbackFn EventCallback;
+		};
+
+		WindowData m_Data;
+	};
+}
+
