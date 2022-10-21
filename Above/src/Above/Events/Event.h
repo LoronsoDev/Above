@@ -50,6 +50,8 @@ namespace Above
 		virtual EventType GetEventType() const = 0;
 		virtual int GetCategoryFlags() const = 0;
 
+		bool Handled = false;
+
 		// Should only be used for debugging purposes.
 		virtual const char* GetName() const = 0;
 
@@ -65,8 +67,6 @@ namespace Above
 		{
 			return GetCategoryFlags() & category;
 		}
-	protected:
-		bool m_Handled = false;
 	};
 
 	class EventDispatcher
@@ -96,7 +96,7 @@ namespace Above
 				//If the event type is the same as the one we're trying to dispatch,
 				//call the function we got as parameter.
 
-				m_Event.m_Handled = func(*(EVENT_TYPE)&m_Event);
+				m_Event.Handled = func(*(EVENT_TYPE*)&m_Event);
 				return true;
 			}
 			return false;

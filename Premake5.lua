@@ -58,7 +58,6 @@ include "Above/vendor/GLFW"
 			cppdialect "C++17"
 			staticruntime "On"
 			systemversion "latest"
-			buildoptions "/MDd"
 
 			defines
 			{
@@ -73,14 +72,17 @@ include "Above/vendor/GLFW"
 
 		filter "configurations:Debug"
 			defines "AB_DEBUG"
+			buildoptions "/MDd"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "AB_RELEASE"
+			buildoptions "/MD"
 			optimize "On"
 
 		filter "configurations:Dist"
 			defines "AB_DIST"
+			buildoptions "/MD"
 			optimize "On"
 
 
@@ -127,12 +129,15 @@ include "Above/vendor/GLFW"
 
 		filter "configurations:Debug"
 			defines "AB_DEBUG"
+			buildoptions "/MDd"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "AB_RELEASE"
+			buildoptions "/MD"
 			optimize "On"
 
 		filter "configurations:Dist"
 			defines "AB_DIST"
+			buildoptions "/MD"
 			optimize "On"
