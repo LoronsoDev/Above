@@ -14,11 +14,13 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution dir)
 IncludeDir = {}
-IncludeDir["GLFW"] = "Above/vendor/GLFW/include"
-IncludeDir["Glad"] = "Above/vendor/Glad/include"
+IncludeDir["GLFW"]	= "Above/vendor/GLFW/include"
+IncludeDir["Glad"]	= "Above/vendor/Glad/include"
+IncludeDir["ImGui"] = "Above/vendor/imgui"
 
 include "Above/vendor/GLFW"
 include "Above/vendor/Glad"
+include "Above/vendor/imgui"
 
 	------------ENGINE PROJECT---------------
 
@@ -46,13 +48,15 @@ include "Above/vendor/Glad"
 			"%{prj.name}/src",
 			"%{prj.name}/vendor/spdlog/include",
 			"%{IncludeDir.GLFW}",
-			"%{IncludeDir.Glad}"
+			"%{IncludeDir.Glad}",
+			"%{IncludeDir.ImGui}"
 		}
 
 		links
 		{
 			"GLFW",
 			"Glad",
+			"ImGui",
 			"opengl32.lib"
 		}
 		
@@ -67,7 +71,8 @@ include "Above/vendor/Glad"
 			{
 				"AB_PLATFORM_WINDOWS",
 				"AB_BUILD_DLL",
-				"GLFW_INCLUDE_NONE"
+				"GLFW_INCLUDE_NONE",
+				"IMGUI_IMPL_OPENGL_LOADER_CUSTOM"
 			}
 
 			postbuildcommands

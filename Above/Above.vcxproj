@@ -79,8 +79,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>abpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>AB_PLATFORM_WINDOWS;AB_BUILD_DLL;GLFW_INCLUDE_NONE;AB_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>AB_PLATFORM_WINDOWS;AB_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;AB_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -103,8 +103,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>abpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>AB_PLATFORM_WINDOWS;AB_BUILD_DLL;GLFW_INCLUDE_NONE;AB_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>AB_PLATFORM_WINDOWS;AB_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;AB_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -131,8 +131,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>abpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>AB_PLATFORM_WINDOWS;AB_BUILD_DLL;GLFW_INCLUDE_NONE;AB_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>AB_PLATFORM_WINDOWS;AB_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;AB_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -163,18 +163,24 @@
     <ClInclude Include="src\Above\Events\Event.h" />
     <ClInclude Include="src\Above\Events\KeyEvent.h" />
     <ClInclude Include="src\Above\Events\MouseEvent.h" />
+    <ClInclude Include="src\Above\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Above\Layer.h" />
     <ClInclude Include="src\Above\LayerStack.h" />
     <ClInclude Include="src\Above\Log.h" />
     <ClInclude Include="src\Above\Window.h" />
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGlLoader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\abpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Above\Application.cpp" />
+    <ClCompile Include="src\Above\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Above\Layer.cpp" />
     <ClCompile Include="src\Above\LayerStack.cpp" />
     <ClCompile Include="src\Above\Log.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGlLoader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\abpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -186,6 +192,9 @@
     </ProjectReference>
     <ProjectReference Include="vendor\Glad\Glad.vcxproj">
       <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
