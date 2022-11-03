@@ -42,7 +42,11 @@ namespace Above
 	{
 		while (m_Running)
 		{
+			glClearColor(.1f, .1f, .1f, 1.0f);
+
 			m_Window->OnUpdate();
+
+			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
