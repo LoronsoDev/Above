@@ -18,9 +18,12 @@ IncludeDir["GLFW"]	= "Above/vendor/GLFW/include"
 IncludeDir["Glad"]	= "Above/vendor/Glad/include"
 IncludeDir["ImGui"] = "Above/vendor/imgui"
 
-include "Above/vendor/GLFW"
-include "Above/vendor/Glad"
-include "Above/vendor/imgui"
+group "Dependencies"
+	include "Above/vendor/GLFW"
+	include "Above/vendor/Glad"
+	include "Above/vendor/imgui"
+
+group ""
 
 	------------ENGINE PROJECT---------------
 
@@ -28,6 +31,7 @@ include "Above/vendor/imgui"
 		location "Above"
 		kind "SharedLib"
 		language "C++"
+		staticruntime "off"
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -64,7 +68,6 @@ include "Above/vendor/imgui"
 
 		filter "system:windows"
 			cppdialect "C++17"
-			staticruntime "On"
 			systemversion "latest"
 
 			defines
@@ -77,22 +80,22 @@ include "Above/vendor/imgui"
 
 			postbuildcommands
 			{
-				("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+				("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 			}
 
 		filter "configurations:Debug"
 			defines "AB_DEBUG"
-			buildoptions "/MDd"
+			runtime "Debug"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "AB_RELEASE"
-			buildoptions "/MD"
+			runtime "Release"
 			optimize "On"
 
 		filter "configurations:Dist"
 			defines "AB_DIST"
-			buildoptions "/MD"
+			runtime "Release"
 			optimize "On"
 
 
@@ -102,6 +105,7 @@ include "Above/vendor/imgui"
 		location "Sandbox"
 		kind "ConsoleApp"
 		language "C++"
+		staticruntime "off"
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -129,7 +133,6 @@ include "Above/vendor/imgui"
 
 		filter "system:windows"
 			cppdialect "C++17"
-			staticruntime "On"
 			systemversion "latest"
 
 			defines
@@ -139,15 +142,15 @@ include "Above/vendor/imgui"
 
 		filter "configurations:Debug"
 			defines "AB_DEBUG"
-			buildoptions "/MDd"
+			runtime "Debug"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "AB_RELEASE"
-			buildoptions "/MD"
+			runtime "Release"
 			optimize "On"
 
 		filter "configurations:Dist"
 			defines "AB_DIST"
-			buildoptions "/MD"
+			runtime "Release"
 			optimize "On"

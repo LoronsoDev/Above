@@ -11,10 +11,13 @@
 	#error ABOVE ONLY SUPPORTS WINDOWS!
 #endif
 
+#ifdef AB_DEBUG
+	#define AB_ENABLE_ASSERTS
+#endif
 
-#ifdef HZ_ENABLE_ASSERTS
-	#define AB_ASSERT(assertion, ...)			{if(!(x)) { AB_ERROR("ASSERTION FAILED: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define AB_CORE_ASSERT(assertion, ...)		{if(!(x)) { AB_CORE_ERROR("ASSERTION FAILED: {0}", __VA_ARGS__); __debugbreak(); } }
+#ifdef AB_ENABLE_ASSERTS
+	#define AB_ASSERT(assertion, ...)			{if(!(assertion)) { AB_ERROR("ASSERTION FAILED: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define AB_CORE_ASSERT(assertion, ...)		{if(!(assertion)) { AB_CORE_ERROR("ASSERTION FAILED: {0}", __VA_ARGS__); __debugbreak(); } }
 #else
 	#define AB_ASSERT(assertion, ...) 
 	#define AB_CORE_ASSERT(assertion, ...) 
