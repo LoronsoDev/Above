@@ -8,16 +8,18 @@ public:
 	ExampleLayer() 
 		: Layer("Example")
 	{
+
 	}
 
 	void OnUpdate() override
 	{
-		AB_TRACE("ExampleLayer::Update");
+		if (Above::Input::IsKeyPressed(AB_KEY_TAB))
+			AB_INFO("TAB KEY");
 	}
 	
 	void OnEvent(Above::Event& e) override
 	{
-		AB_INFO("{0}", e);
+		
 	}
 };
 
