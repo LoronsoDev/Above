@@ -9,9 +9,8 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
-// TEMPORARY
+// TEMPORARY (windows dependant)
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
 
 namespace Above
 {
