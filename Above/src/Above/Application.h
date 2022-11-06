@@ -7,7 +7,7 @@
 #include "Above/Events/Event.h"
 #include "Above/Events/ApplicationEvent.h"
 
-
+#include "Above/ImGui/ImGuiLayer.h"
 
 namespace Above
 {
@@ -35,6 +35,7 @@ namespace Above
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 
 		LayerStack m_LayerStack;

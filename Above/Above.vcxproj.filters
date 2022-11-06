@@ -93,12 +93,6 @@
     <ClInclude Include="src\Above\Window.h">
       <Filter>src\Above</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
-      <Filter>src\Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGlLoader.h">
-      <Filter>src\Platform\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
       <Filter>src\Platform\Windows</Filter>
     </ClInclude>
@@ -1373,12 +1367,6 @@
     <ClCompile Include="src\Above\Log.cpp">
       <Filter>src\Above</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
-      <Filter>src\Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGlLoader.cpp">
-      <Filter>src\Platform\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
@@ -1388,5 +1376,6 @@
     <ClCompile Include="src\abpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Above\ImGui\ImGuiBuild.cpp" />
   </ItemGroup>
 </Project>

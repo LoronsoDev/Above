@@ -5,7 +5,7 @@ namespace Above
 {
 	LayerStack::LayerStack()
 	{
-		m_LayerInsert = m_Layers.begin();
+
 	}
 
 	LayerStack::~LayerStack()
@@ -23,7 +23,8 @@ namespace Above
 	void LayerStack::PushLayer(Layer* layer)
 	{
 		//Changing element the iterator is pointing at
-		m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
+		m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
+		m_LayerInsertIndex++;
 	}
 
 	/// <summary>
@@ -42,7 +43,7 @@ namespace Above
 		if (it != m_Layers.end())
 		{
 			m_Layers.erase(it);
-			m_LayerInsert--;			//Changing element the iterator is pointing at
+			m_LayerInsertIndex--;
 		}
 	}
 
