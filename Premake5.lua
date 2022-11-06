@@ -17,6 +17,7 @@ IncludeDir = {}
 IncludeDir["GLFW"]	= "Above/vendor/GLFW/include"
 IncludeDir["Glad"]	= "Above/vendor/Glad/include"
 IncludeDir["ImGui"] = "Above/vendor/imgui"
+IncludeDir["glm"] = "Above/vendor/glm"
 
 group "Dependencies"
 	include "Above/vendor/GLFW"
@@ -44,7 +45,9 @@ group ""
 			"%{prj.name}/src/**.h",
 			"%{prj.name}/src/**.hpp",
 			"%{prj.name}/src/**.hxx",
-			"%{prj.name}/src/**.cpp"
+			"%{prj.name}/src/**.cpp",
+			"%{prj.name}/vendor/glm/glm/**.inl",
+			"%{prj.name}/vendor/glm/glm/**.hpp"
 		}
 
 		includedirs
@@ -53,7 +56,8 @@ group ""
 			"%{prj.name}/vendor/spdlog/include",
 			"%{IncludeDir.GLFW}",
 			"%{IncludeDir.Glad}",
-			"%{IncludeDir.ImGui}"
+			"%{IncludeDir.ImGui}",
+			"%{IncludeDir.glm}"
 		}
 
 		links
@@ -121,7 +125,8 @@ group ""
 		includedirs
 		{
 			"Above/vendor/spdlog/include",
-			"Above/src"
+			"Above/src",
+			"%{IncludeDir.glm}"
 		}
 
 		links
