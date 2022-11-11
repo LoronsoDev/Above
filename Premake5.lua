@@ -30,9 +30,10 @@ group ""
 
 	project "Above"
 		location "Above"
-		kind "SharedLib"
+		kind "StaticLib"
 		language "C++"
-		staticruntime "off"
+		cppdialect "C++17"
+		staticruntime "on" 
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -48,6 +49,11 @@ group ""
 			"%{prj.name}/src/**.cpp",
 			"%{prj.name}/vendor/glm/glm/**.inl",
 			"%{prj.name}/vendor/glm/glm/**.hpp"
+		}
+
+		defines
+		{
+			"_CRT_SECURE_NO_WARNINGS"
 		}
 
 		includedirs
@@ -71,36 +77,29 @@ group ""
 		--Windows projects
 
 		filter "system:windows"
-			cppdialect "C++17"
 			systemversion "latest"
 
 			defines
 			{
 				"AB_PLATFORM_WINDOWS",
 				"AB_BUILD_DLL",
-				"GLFW_INCLUDE_NONE",
-				"IMGUI_IMPL_OPENGL_LOADER_CUSTOM"
-			}
-
-			postbuildcommands
-			{
-				("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
+				"GLFW_INCLUDE_NONE"
 			}
 
 		filter "configurations:Debug"
 			defines "AB_DEBUG"
 			runtime "Debug"
-			symbols "On"
+			symbols "on"
 
 		filter "configurations:Release"
 			defines "AB_RELEASE"
 			runtime "Release"
-			optimize "On"
+			optimize "on"
 
 		filter "configurations:Dist"
 			defines "AB_DIST"
 			runtime "Release"
-			optimize "On"
+			optimize "on"
 
 
 	------------SANDBOX PROJECT---------------
@@ -109,7 +108,8 @@ group ""
 		location "Sandbox"
 		kind "ConsoleApp"
 		language "C++"
-		staticruntime "off"
+		cppdialect "C++17"
+		staticruntime "on"
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -137,7 +137,6 @@ group ""
 		--Windows projects
 
 		filter "system:windows"
-			cppdialect "C++17"
 			systemversion "latest"
 
 			defines
@@ -148,14 +147,14 @@ group ""
 		filter "configurations:Debug"
 			defines "AB_DEBUG"
 			runtime "Debug"
-			symbols "On"
+			symbols "on"
 
 		filter "configurations:Release"
 			defines "AB_RELEASE"
 			runtime "Release"
-			optimize "On"
+			optimize "on"
 
 		filter "configurations:Dist"
 			defines "AB_DIST"
 			runtime "Release"
-			optimize "On"
+			optimize "on"
