@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Above/Window.h"
+#include "Above/Renderer/GraphicsContext.h"
+
+#include "Platform/OpenGL/OpenGLContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -30,6 +33,7 @@ namespace Above
 
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData
 		{

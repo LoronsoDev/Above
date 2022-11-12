@@ -5,8 +5,6 @@
 #include "Above/Events/MouseEvent.h"
 #include "Above/Events/KeyEvent.h"
 
-#include <glad/glad.h>
-
 namespace Above
 {
 	static bool s_GLFWInitialized = false;
@@ -28,6 +26,7 @@ namespace Above
 
 	WindowsWindow::~WindowsWindow()
 	{
+		delete m_Context;
 		Shutdown();
 	}
 
@@ -38,6 +37,7 @@ namespace Above
 		m_Data.Height = props.Height;
 
 		AB_CORE_INFO("Created window '{0}' [{1} x {2}]", props.Title, props.Width, props.Height);
+
 
 		if (!s_GLFWInitialized)
 		{
@@ -51,9 +51,8 @@ namespace Above
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		AB_CORE_ASSERT(status, "FAILED TO INITIALIZE GLAD");
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
@@ -153,7 +152,7 @@ namespace Above
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
