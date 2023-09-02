@@ -12,6 +12,7 @@
 //TEMP
 #include "Above/Renderer/Shader.h"
 #include "Above/Renderer/Buffer.h"
+#include "Above/Renderer/VertexArray.h"
 
 namespace Above
 {
@@ -42,12 +43,13 @@ namespace Above
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		
+		std::shared_ptr<Shader> m_Shader;
+		std::shared_ptr<VertexArray> m_VertexArray;
 
-		unsigned int m_VertexArray;
-		std::unique_ptr<Shader> m_Shader;
+		std::shared_ptr<Shader> m_BlueShader;
+		std::shared_ptr<VertexArray> m_SquareVA;
 
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 	private:
 		static Application* s_Instance;
 	};
