@@ -1,23 +1,18 @@
 #pragma once
 
+#include "RendererAPI.h"
+
 namespace Above
 {
-	enum class RendererAPI
-	{
-		None = 0,
-		OpenGL,
-		Direct3D,
-		Vulkan,
-		Count
-	};
-
 	class Renderer
 	{
 	public:
-		static inline RendererAPI GetAPI() { return s_RendererAPI; };
+		static void BeginScene(); //TODO
+		static void EndScene();
 
-	private:
-		static RendererAPI s_RendererAPI;
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+		static inline RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	};
 }
 
