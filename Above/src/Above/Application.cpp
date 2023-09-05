@@ -186,7 +186,6 @@ namespace Above
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
-
 		}
 	}
 
