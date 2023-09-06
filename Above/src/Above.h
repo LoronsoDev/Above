@@ -12,6 +12,19 @@
 
 #include "Above/ImGui/ImGuiLayer.h"
 
+//------------------Renderer---------------------------
+
+#include <Above/Renderer/Renderer.h>
+#include <Above/Renderer/RenderCommand.h>
+
+#include <Above/Renderer/Buffer.h>
+#include <Above/Renderer/Shader.h>
+#include <Above/Renderer/VertexArray.h>
+
+#include <Above/Renderer/OrthographicCamera.h>
+
+//-----------------------------------------------------
+
 
 //------------------Entry point------------------------
 #include "Above/EntryPoint.h"

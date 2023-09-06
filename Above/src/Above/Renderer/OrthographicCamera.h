@@ -27,6 +27,6 @@ namespace Above
 		glm::mat4 m_ViewProjectionMatrix;
 
 		glm::vec3 m_Position = glm::vec3(0.f);
-		float m_Rotation;
+		float m_Rotation = 0.0f;
 	};
 }

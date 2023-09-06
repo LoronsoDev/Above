@@ -9,19 +9,12 @@
 
 #include "Above/ImGui/ImGuiLayer.h"
 
-//TEMP
-#include "Above/Renderer/Shader.h"
-#include "Above/Renderer/Buffer.h"
-#include "Above/Renderer/VertexArray.h"
-
-#include <Above/Renderer/OrthographicCamera.h>
-
 namespace Above
 {
 	/// <summary>
 	/// Defines the common behaviour for all apps.
 	/// </summary>
-	class ABOVE_API Application
+	class Application
 	{
 	public:
 
@@ -45,14 +38,7 @@ namespace Above
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-		
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
 
-		std::shared_ptr<Shader> m_BlueShader;
-		std::shared_ptr<VertexArray> m_SquareVA;
-
-		OrthographicCamera m_Camera;
 	private:
 		static Application* s_Instance;
 	};
