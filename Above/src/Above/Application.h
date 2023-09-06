@@ -14,6 +14,8 @@
 #include "Above/Renderer/Buffer.h"
 #include "Above/Renderer/VertexArray.h"
 
+#include <Above/Renderer/OrthographicCamera.h>
+
 namespace Above
 {
 	/// <summary>
@@ -50,6 +52,7 @@ namespace Above
 		std::shared_ptr<Shader> m_BlueShader;
 		std::shared_ptr<VertexArray> m_SquareVA;
 
+		OrthographicCamera m_Camera;
 	private:
 		static Application* s_Instance;
 	};
