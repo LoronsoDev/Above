@@ -25,7 +25,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		std::shared_ptr<Above::VertexBuffer> vertexBuffer;
+		Above::Ref<Above::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(Above::VertexBuffer::Create(vertices, sizeof(vertices)));
 		//m_VertexBuffer->Bind();
 
@@ -39,7 +39,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<Above::IndexBuffer> indexBuffer;
+		Above::Ref<Above::IndexBuffer> indexBuffer;
 
 		indexBuffer.reset(Above::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
@@ -54,7 +54,7 @@ public:
 			-.5f,  .5f, 0.0f
 		};
 
-		std::shared_ptr<Above::VertexBuffer> squareVB;
+		Above::Ref<Above::VertexBuffer> squareVB;
 		squareVB.reset(Above::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout(
 			{
@@ -63,7 +63,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Above::IndexBuffer> squareIB;
+		Above::Ref<Above::IndexBuffer> squareIB;
 		squareIB.reset(Above::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -210,11 +210,11 @@ public:
 	}
 
 private:
-	std::shared_ptr<Above::Shader> m_Shader;
-	std::shared_ptr<Above::VertexArray> m_VertexArray;
+	Above::Ref<Above::Shader> m_Shader;
+	Above::Ref<Above::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Above::Shader> m_FlatColorShader;
-	std::shared_ptr<Above::VertexArray> m_SquareVA;
+	Above::Ref<Above::Shader> m_FlatColorShader;
+	Above::Ref<Above::VertexArray> m_SquareVA;
 
 	Above::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
