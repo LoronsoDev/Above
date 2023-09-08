@@ -126,7 +126,8 @@ group ""
 		{
 			"Above/vendor/spdlog/include",
 			"Above/src",
-			"%{IncludeDir.glm}"
+			"%{IncludeDir.glm}",
+			"%{IncludeDir.ImGui}"
 		}
 
 		links
