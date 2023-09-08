@@ -2,6 +2,7 @@
 
 #include "Above/Core.h"
 #include "Above/Events/Event.h"
+#include "Core/Timestep.h"
 
 namespace Above
 {
@@ -13,7 +14,7 @@ namespace Above
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep timestep) {}
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 

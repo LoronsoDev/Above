@@ -9,6 +9,8 @@
 
 #include "Above/ImGui/ImGuiLayer.h"
 
+#include <Above/Core/Timestep.h>
+
 namespace Above
 {
 	/// <summary>
@@ -34,10 +36,12 @@ namespace Above
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
+	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		float m_LastFrameTime = 0.0f; //Time that it took to render last frame
 
 	private:
 		static Application* s_Instance;

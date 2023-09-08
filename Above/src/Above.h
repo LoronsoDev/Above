@@ -6,6 +6,8 @@
 #include "Above/Layer.h"
 #include "Above/Log.h"
 
+#include <Above/Core/Timestep.h>
+
 #include "Above/Input.h"
 #include "Above/Keycodes.h"
 #include "Above/MouseButtonCodes.h"

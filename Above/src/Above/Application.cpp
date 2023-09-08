@@ -12,6 +12,8 @@
 
 #include "Renderer/RenderCommand.h"
 
+#include <GLFW/glfw3.h>
+
 namespace Above
 {
 
@@ -52,8 +54,12 @@ namespace Above
 	{
 		while (m_Running)
 		{
+			float time = (float)glfwGetTime(); //This should be platform dependent ( Platform::GetTime() )
+			Timestep timestep = time - m_LastFrameTime;
+			m_LastFrameTime = time;
+
 			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(timestep);
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
