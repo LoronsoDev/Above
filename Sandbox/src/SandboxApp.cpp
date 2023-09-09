@@ -1,12 +1,10 @@
-#include "abpch.h"
-
 #include <Above.h>
+
+#include "Platform/OpenGL/OpenGLShader.h"
 #include "imgui.h"
 
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "Platform/OpenGL/OpenGLShader.h"
-
 
 class ExampleLayer : public Above::Layer
 {
@@ -69,40 +67,6 @@ public:
 		squareIB.reset(Above::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
-		std::string flatColorShaderVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 a_Position;	
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec3 v_Position;	
-
-			void main()
-			{
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string flatColorShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;		
-		
-			in vec3 v_Position;
-			
-			uniform vec3 u_Color;			
-
-			void main()
-			{
-				color = vec4(u_Color, 1.0f);
-			}
-		)";
-
-		m_FlatColorShader.reset(Above::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
-
 		std::string vertexSrc = R"(
 			#version 330 core
 			
@@ -137,44 +101,43 @@ public:
 				color = v_Color;
 			}
 		)";
-
 		m_Shader.reset(Above::Shader::Create(vertexSrc, fragmentSrc));
 
-
-		std::string textureShaderVertexSrc = R"(
+		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;	
-			layout(location = 1) in vec2 a_TexCoord;	
 
 			uniform mat4 u_ViewProjection;
 			uniform mat4 u_Transform;
 
-			out vec2 v_TexCoord;
+			out vec3 v_Position;	
 
 			void main()
 			{
-				v_TexCoord = a_TexCoord;
+				v_Position = a_Position;
 				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}
 		)";
 
-		std::string textureShaderFragmentSrc = R"(
+		std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;		
 		
-			in vec2 v_TexCoord;
+			in vec3 v_Position;
 			
-			uniform sampler2D u_Texture;			
+			uniform vec3 u_Color;			
 
 			void main()
 			{
-				color = texture(u_Texture, v_TexCoord);
+				color = vec4(u_Color, 1.0f);
 			}
 		)";
 
-		m_TextureShader.reset(Above::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+		m_FlatColorShader.reset(Above::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+
+		m_TextureShader.reset(Above::Shader::Create("assets/shaders/Texture.glsl"));
 
 		m_Texture = Above::Texture2D::Create("assets/textures/checkerboard.png");
 		m_LogoTexture = Above::Texture2D::Create("assets/textures/logo.png");
@@ -239,8 +202,7 @@ public:
 		m_Texture->Bind();
 		Above::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_LogoTexture->Bind();
-		Above::Renderer::Submit(m_TextureShader, m_SquareVA,
-			glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Above::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		// Triangle
 		//Above::Renderer::Submit(m_Shader, m_VertexArray);
@@ -267,8 +229,7 @@ private:
 	Above::Ref<Above::Shader> m_FlatColorShader, m_TextureShader;
 	Above::Ref<Above::VertexArray> m_SquareVA;
 
-	Above::Ref<Above::Texture2D> m_Texture;
-	Above::Ref<Above::Texture2D> m_LogoTexture;
+	Above::Ref<Above::Texture2D> m_Texture, m_LogoTexture;
 
 	Above::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
