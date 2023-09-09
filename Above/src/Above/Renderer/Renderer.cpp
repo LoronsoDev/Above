@@ -7,6 +7,11 @@ namespace Above
 {
 	Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
 
+	void Renderer::Init()
+	{
+		RenderCommand::Init();
+	}
+
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
 		//Does verifications, like making sure the shader gets the right uniforms.
