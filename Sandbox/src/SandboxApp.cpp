@@ -101,7 +101,7 @@ public:
 				color = v_Color;
 			}
 		)";
-		m_Shader.reset(Above::Shader::Create(vertexSrc, fragmentSrc));
+		m_TriangleShader = Above::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
 		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
@@ -135,15 +135,15 @@ public:
 			}
 		)";
 
-		m_FlatColorShader.reset(Above::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColorShader = Above::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 
-		m_TextureShader.reset(Above::Shader::Create("assets/shaders/Texture.glsl"));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Above::Texture2D::Create("assets/textures/checkerboard.png");
 		m_LogoTexture = Above::Texture2D::Create("assets/textures/logo.png");
 
-		std::dynamic_pointer_cast<Above::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Above::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Above::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Above::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Above::Timestep ts) override
@@ -199,13 +199,15 @@ public:
 			}
 		}
 
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+
 		m_Texture->Bind();
-		Above::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Above::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_LogoTexture->Bind();
-		Above::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Above::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		// Triangle
-		//Above::Renderer::Submit(m_Shader, m_VertexArray);
+		//Above::Renderer::Submit(m_TriangleShader, m_VertexArray);
 
 		Above::Renderer::EndScene();
 	}
@@ -223,10 +225,12 @@ public:
 	}
 
 private:
-	Above::Ref<Above::Shader> m_Shader;
+	Above::ShaderLibrary m_ShaderLibrary;
+
+	Above::Ref<Above::Shader> m_TriangleShader;
 	Above::Ref<Above::VertexArray> m_VertexArray;
 
-	Above::Ref<Above::Shader> m_FlatColorShader, m_TextureShader;
+	Above::Ref<Above::Shader> m_FlatColorShader;
 	Above::Ref<Above::VertexArray> m_SquareVA;
 
 	Above::Ref<Above::Texture2D> m_Texture, m_LogoTexture;
