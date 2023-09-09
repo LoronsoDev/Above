@@ -18,6 +18,7 @@ IncludeDir["GLFW"]	= "Above/vendor/GLFW/include"
 IncludeDir["Glad"]	= "Above/vendor/Glad/include"
 IncludeDir["ImGui"] = "Above/vendor/imgui"
 IncludeDir["glm"] = "Above/vendor/glm"
+IncludeDir["stb_image"] = "Above/vendor/stb_image"
 
 group "Dependencies"
 	include "Above/vendor/GLFW"
@@ -47,6 +48,8 @@ group ""
 			"%{prj.name}/src/**.hpp",
 			"%{prj.name}/src/**.hxx",
 			"%{prj.name}/src/**.cpp",
+			"%{prj.name}/vendor/stb_image/**.cpp",
+			"%{prj.name}/vendor/stb_image/**.h",
 			"%{prj.name}/vendor/glm/glm/**.inl",
 			"%{prj.name}/vendor/glm/glm/**.hpp"
 		}
@@ -63,7 +66,8 @@ group ""
 			"%{IncludeDir.GLFW}",
 			"%{IncludeDir.Glad}",
 			"%{IncludeDir.ImGui}",
-			"%{IncludeDir.glm}"
+			"%{IncludeDir.glm}",
+			"%{IncludeDir.stb_image}"
 		}
 
 		links
