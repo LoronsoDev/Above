@@ -1,7 +1,9 @@
 #include <Above.h>
+#include <Above/Core/EntryPoint.h>
 
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "imgui.h"
+#include "Sandbox2D.h"
 
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -13,7 +15,7 @@ public:
 		: Layer("Example"),
 		m_CameraController(1280.f/720.0f)
 	{
-		m_VertexArray.reset(Above::VertexArray::Create());
+		m_VertexArray = Above::VertexArray::Create();
 
 		float vertices[3 * 7] =
 		{
@@ -41,7 +43,7 @@ public:
 		indexBuffer.reset(Above::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA.reset(Above::VertexArray::Create());
+		m_SquareVA = Above::VertexArray::Create();
 
 		float squareVertices[5 * 4] =
 		{
@@ -195,11 +197,6 @@ public:
 	{
 		//Above::EventDispatcher dispatcher(e);
 		m_CameraController.OnEvent(e);
-
-		if(e.GetEventType() == Above::EventType::WindowResize)
-		{
-			auto& resizeEvent = (Above::WindowResizeEvent&)e;
-		}
 	}
 
 private:
@@ -222,7 +219,8 @@ class Sandbox : public Above::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 	~Sandbox() {}
 };

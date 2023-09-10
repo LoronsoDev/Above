@@ -6,13 +6,13 @@
 
 namespace Above
 {
-	VertexArray* Above::VertexArray::Create()
+	Ref<VertexArray> Above::VertexArray::Create()
 	{
 		//We decide which rendering API we're using...
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:		AB_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::API::OpenGL:	return new OpenGLVertexArray();
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexArray>();
 		}
 
 		AB_CORE_ASSERT(false, "Unknown RendererAPI!");
