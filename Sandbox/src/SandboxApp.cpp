@@ -195,6 +195,11 @@ public:
 	{
 		//Above::EventDispatcher dispatcher(e);
 		m_CameraController.OnEvent(e);
+
+		if(e.GetEventType() == Above::EventType::WindowResize)
+		{
+			auto& resizeEvent = (Above::WindowResizeEvent&)e;
+		}
 	}
 
 private:
