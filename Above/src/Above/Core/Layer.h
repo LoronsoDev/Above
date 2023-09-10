@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Above/Core.h"
+#include "Above/Core/Core.h"
 #include "Above/Events/Event.h"
-#include "Core/Timestep.h"
+#include "Above/Core/Timestep.h"
 
 namespace Above
 {

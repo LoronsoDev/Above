@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Above/Core.h"
-#include "Above/Layer.h"
+#include "Above/Core/Core.h"
+#include "Above/Core/Layer.h"
 
 namespace Above
 {

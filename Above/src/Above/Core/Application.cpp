@@ -1,8 +1,8 @@
 #include "abpch.h"
 
 #include "Application.h"
-#include "Above/Log.h"
-#include "Above/Input.h"
+#include "Above/Core/Log.h"
+#include "Above/Core/Input.h"
 #include "Above/Renderer/Buffer.h"
 
 //temp
@@ -10,7 +10,7 @@
 
 #include <Above/Renderer/Renderer.h>
 
-#include "Renderer/RenderCommand.h"
+#include "Above/Renderer/RenderCommand.h"
 
 #include <GLFW/glfw3.h>
 

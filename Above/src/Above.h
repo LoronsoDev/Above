@@ -2,16 +2,16 @@
 
 // FOR USE BY EXTERNAL APPLICATIONS
 
-#include "Above/Application.h"
-#include "Above/Layer.h"
-#include "Above/Log.h"
+#include "Above/Core/Application.h"
+#include "Above/Core/Layer.h"
+#include "Above/Core/Log.h"
 
 #include <Above/Core/Timestep.h>
 
-#include "Above/Input.h"
-#include "Above/Keycodes.h"
-#include "Above/MouseButtonCodes.h"
-#include <Above/OrthographicCameraController.h>
+#include "Above/Core/Input.h"
+#include "Above/Core/Keycodes.h"
+#include "Above/Core/MouseButtonCodes.h"
+#include <Above/Renderer/OrthographicCameraController.h>
 
 #include "Above/ImGui/ImGuiLayer.h"
 
@@ -31,6 +31,6 @@
 
 
 //------------------Entry point------------------------
-#include "Above/EntryPoint.h"
+#include "Above/Core/EntryPoint.h"
 //-----------------------------------------------------
 

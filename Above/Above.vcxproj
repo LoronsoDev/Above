@@ -144,32 +144,32 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Above.h" />
-    <ClInclude Include="src\Above\Application.h" />
-    <ClInclude Include="src\Above\Core.h" />
+    <ClInclude Include="src\Above\Core\Application.h" />
+    <ClInclude Include="src\Above\Core\Core.h" />
+    <ClInclude Include="src\Above\Core\EntryPoint.h" />
+    <ClInclude Include="src\Above\Core\Input.h" />
+    <ClInclude Include="src\Above\Core\Keycodes.h" />
+    <ClInclude Include="src\Above\Core\Layer.h" />
+    <ClInclude Include="src\Above\Core\LayerStack.h" />
+    <ClInclude Include="src\Above\Core\Log.h" />
+    <ClInclude Include="src\Above\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Above\Core\Timestep.h" />
-    <ClInclude Include="src\Above\EntryPoint.h" />
+    <ClInclude Include="src\Above\Core\Window.h" />
     <ClInclude Include="src\Above\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Above\Events\Event.h" />
     <ClInclude Include="src\Above\Events\KeyEvent.h" />
     <ClInclude Include="src\Above\Events\MouseEvent.h" />
     <ClInclude Include="src\Above\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Above\Input.h" />
-    <ClInclude Include="src\Above\Keycodes.h" />
-    <ClInclude Include="src\Above\Layer.h" />
-    <ClInclude Include="src\Above\LayerStack.h" />
-    <ClInclude Include="src\Above\Log.h" />
-    <ClInclude Include="src\Above\MouseButtonCodes.h" />
-    <ClInclude Include="src\Above\OrthographicCameraController.h" />
     <ClInclude Include="src\Above\Renderer\Buffer.h" />
     <ClInclude Include="src\Above\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Above\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Above\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Above\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Above\Renderer\Renderer.h" />
     <ClInclude Include="src\Above\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Above\Renderer\Shader.h" />
     <ClInclude Include="src\Above\Renderer\Texture.h" />
     <ClInclude Include="src\Above\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Above\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -598,14 +598,14 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Above\Application.cpp" />
+    <ClCompile Include="src\Above\Core\Application.cpp" />
+    <ClCompile Include="src\Above\Core\Layer.cpp" />
+    <ClCompile Include="src\Above\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Above\Core\Log.cpp" />
     <ClCompile Include="src\Above\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Above\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Above\Layer.cpp" />
-    <ClCompile Include="src\Above\LayerStack.cpp" />
-    <ClCompile Include="src\Above\Log.cpp" />
-    <ClCompile Include="src\Above\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Above\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Above\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Above\Renderer\OrtographicCamera.cpp" />
     <ClCompile Include="src\Above\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Above\Renderer\Renderer.cpp" />
@@ -636,9 +636,6 @@
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\Users\loren\Downloads\checkerboard.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,9 +1,9 @@
 #include <abpch.h>
 
-#include <Above/OrthographicCameraController.h>
+#include <Above/Renderer/OrthographicCameraController.h>
 
-#include <Above/Input.h>
-#include <Above/Keycodes.h>
+#include <Above/Core/Input.h>
+#include <Above/Core/Keycodes.h>
 
 namespace Above
 {
