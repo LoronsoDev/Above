@@ -11,8 +11,7 @@ class ExampleLayer : public Above::Layer
 public:
 	ExampleLayer() 
 		: Layer("Example"),
-		m_Camera(-1.6f, 1.6f, -0.9f, 0.9f),
-		m_CameraPosition(0.f)
+		m_CameraController(1280.f/720.0f)
 	{
 		m_VertexArray.reset(Above::VertexArray::Create());
 
@@ -148,41 +147,14 @@ public:
 
 	void OnUpdate(Above::Timestep ts) override
 	{
-		if (Above::Input::IsKeyPressed(AB_KEY_W))
-		{
-			m_CameraPosition.y += m_CameraMoveSpeed * ts;
-		}
-		if (Above::Input::IsKeyPressed(AB_KEY_S))
-		{
-			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
-		}
-		if (Above::Input::IsKeyPressed(AB_KEY_A))
-		{
-			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-		}
-		if (Above::Input::IsKeyPressed(AB_KEY_D))
-		{
-			m_CameraPosition.x += m_CameraMoveSpeed * ts;
-		}
+		//update
+		m_CameraController.OnUpdate(ts);
 
-
-		if (Above::Input::IsKeyPressed(AB_KEY_RIGHT))
-		{
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
-		}
-
-		if (Above::Input::IsKeyPressed(AB_KEY_LEFT))
-		{
-			m_CameraRotation += m_CameraRotationSpeed * ts;
-		}
-
+		//render
 		Above::RenderCommand::SetClearColor({ .1f, .1f, .1f, 1.0f });
 		Above::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		Above::Renderer::BeginScene(m_Camera);
+		Above::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -219,9 +191,10 @@ public:
 		ImGui::End();
 	}
 
-	void OnEvent(Above::Event& event) override
+	void OnEvent(Above::Event& e) override
 	{
-		//Above::EventDispatcher dispatcher(event);
+		//Above::EventDispatcher dispatcher(e);
+		m_CameraController.OnEvent(e);
 	}
 
 private:
@@ -235,12 +208,7 @@ private:
 
 	Above::Ref<Above::Texture2D> m_Texture, m_LogoTexture;
 
-	Above::OrthographicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-	float m_CameraRotation = 0.0f;
-	float m_CameraMoveSpeed = 2.f;
-	float m_CameraRotationSpeed = 90.f;
-
+	Above::OrthographicCameraController m_CameraController;
 	glm::vec3 m_SquareColor = glm::vec3(0.2f, 0.3f, 0.8f);
 };
 
