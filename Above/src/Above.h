@@ -18,6 +18,7 @@
 //------------------Renderer---------------------------
 
 #include <Above/Renderer/Renderer.h>
+#include <Above/Renderer/Renderer2D.h>
 #include <Above/Renderer/RenderCommand.h>
 
 #include <Above/Renderer/Buffer.h>

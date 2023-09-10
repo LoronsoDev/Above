@@ -123,6 +123,9 @@
     <ClInclude Include="src\Above\Renderer\Renderer.h">
       <Filter>src\Above\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Above\Renderer\Renderer2D.h">
+      <Filter>src\Above\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Above\Renderer\RendererAPI.h">
       <Filter>src\Above\Renderer</Filter>
     </ClInclude>
@@ -1446,6 +1449,9 @@
       <Filter>src\Above\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Above\Renderer\Renderer.cpp">
+      <Filter>src\Above\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Above\Renderer\Renderer2D.cpp">
       <Filter>src\Above\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Above\Renderer\RendererAPI.cpp">
