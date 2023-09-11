@@ -1,6 +1,6 @@
 #pragma once
 #include <Above/Renderer/OrthographicCamera.h>
-
+#include <Above/Renderer/Texture.h>
 namespace Above
 {
 	class Renderer2D
@@ -15,5 +15,7 @@ namespace Above
 		//Primitives
 		static void DrawQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color);
+		static void DrawQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture>& texture);
+		static void DrawQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture>& texture);
 	};
 }

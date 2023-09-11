@@ -20,5 +20,7 @@ private:
 	//temp
 	Above::Ref<Above::VertexArray> m_SquareVA;
 	Above::Ref<Above::Shader> m_FlatColorShader;
+	Above::Ref<Above::Texture2D> m_CheckerboardTexture;
+
 	glm::vec4 m_SquareColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
 };

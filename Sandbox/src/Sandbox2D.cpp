@@ -1,6 +1,6 @@
 #include "Sandbox2D.h"
 
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include "glm/gtc/type_ptr.hpp"
 
 #include <Platform/OpenGL/OpenGLShader.h>
@@ -15,7 +15,7 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 { 
-	
+	m_CheckerboardTexture = Above::Texture2D::Create("assets/textures/checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -35,6 +35,7 @@ void Sandbox2D::OnUpdate(Above::Timestep timestep)
 
 	Above::Renderer2D::DrawQuad({-1.f, 0.f}, 45.f, {0.8f, 0.8f}, {0.8f, .2f, .3f, 1.f});
 	Above::Renderer2D::DrawQuad({0.5f, -0.5f}, 0.f, {0.5f, 0.75f}, {0.2f, .3f, .8f, 1.f});
+	Above::Renderer2D::DrawQuad({0.2f, -0.5f, -0.1f}, 0.f, {10.0f, 10.0f}, m_CheckerboardTexture);
 	Above::Renderer2D::EndScene();
 
 	//std::dynamic_pointer_cast<Above::OpenGLShader>(m_FlatColorShader)->Bind();
