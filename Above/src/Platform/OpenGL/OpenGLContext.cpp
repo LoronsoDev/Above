@@ -32,6 +32,7 @@ namespace Above
 
 	void OpenGLContext::SwapBuffers()
 	{
+		AB_PROFILE_FUNCTION();
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }

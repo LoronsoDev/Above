@@ -23,7 +23,7 @@ namespace Above
 	};
 
 	// Intereface representing a desktop system based window.
-	class ABOVE_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;

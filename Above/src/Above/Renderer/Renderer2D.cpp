@@ -19,6 +19,8 @@ namespace Above
 
 	void Renderer2D::Init()
 	{
+		AB_PROFILE_FUNCTION();
+
 		s_Data = new Renderer2DStorage();
 
 		s_Data->QuadVertexArray = VertexArray::Create();
@@ -57,18 +59,23 @@ namespace Above
 
 	void Renderer2D::Shutdown()
 	{
+		AB_PROFILE_FUNCTION();
+
 		delete s_Data;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
+		AB_PROFILE_FUNCTION();
+
 		s_Data->TextureShader->Bind();
 		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
 	{
-		
+		AB_PROFILE_FUNCTION();
+
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4& color)
@@ -78,6 +85,8 @@ namespace Above
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color)
 	{
+		AB_PROFILE_FUNCTION();
+
 		s_Data->TextureShader->SetFloat4("u_Color", color);
 		s_Data->WhiteTexture->Bind();
 
@@ -97,6 +106,8 @@ namespace Above
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture>& texture, const glm::vec4& color)
 	{
+		AB_PROFILE_FUNCTION();
+
 		s_Data->TextureShader->SetFloat4("u_Color", color);
 		texture->Bind(0);
 

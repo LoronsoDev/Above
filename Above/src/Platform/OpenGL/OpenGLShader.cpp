@@ -22,6 +22,8 @@ namespace Above
 
 	OpenGLShader::OpenGLShader(const std::string& filePath)
 	{
+		AB_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(filePath);
 		auto shaderSources = PreProcess(source);
 
@@ -34,6 +36,8 @@ namespace Above
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: m_Name(name)
 	{
+		AB_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -43,11 +47,15 @@ namespace Above
 
 	OpenGLShader::~OpenGLShader()
 	{
+		AB_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filePath)
 	{
+		AB_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(filePath, std::ios::in | std::ios::binary);
 		if (in)
@@ -68,6 +76,8 @@ namespace Above
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		AB_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -93,6 +103,8 @@ namespace Above
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		AB_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		AB_CORE_ASSERT(shaderSources.size() <= 2, "Necessary amount of shaders in the pipeline not reached");
 		std::array<GLenum, 2> glShaderIDs;
@@ -165,31 +177,43 @@ namespace Above
 
 	void OpenGLShader::Bind() const
 	{
+		AB_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 	void OpenGLShader::Unbind() const
 	{
+		AB_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetInt(const std::string& name, const int value)
 	{
+		AB_PROFILE_FUNCTION();
+
 		UploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
+		AB_PROFILE_FUNCTION();
+
 		UploadUniformFloat3(name, value);
 	}
 
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
+		AB_PROFILE_FUNCTION();
+
 		UploadUniformFloat4(name, value);
 
 	}
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
+		AB_PROFILE_FUNCTION();
+
 		UploadUniformMat4(name, value);
 	}
 

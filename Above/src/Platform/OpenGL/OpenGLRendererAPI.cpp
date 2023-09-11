@@ -6,8 +6,13 @@
 
 namespace Above
 {
+
+#define AB_PROFILE_RENDERER_FUNCTION()
+
 	void OpenGLRendererAPI::Init()
 	{
+		AB_PROFILE_FUNCTION();
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

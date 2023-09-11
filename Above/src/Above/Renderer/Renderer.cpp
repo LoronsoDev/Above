@@ -10,6 +10,8 @@ namespace Above
 
 	void Renderer::Init()
 	{
+		AB_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
 	}
