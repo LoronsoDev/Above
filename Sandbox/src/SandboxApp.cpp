@@ -24,8 +24,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		Above::Ref<Above::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Above::VertexBuffer::Create(vertices, sizeof(vertices)));
+		Above::Ref<Above::VertexBuffer> vertexBuffer = Above::VertexBuffer::Create(vertices, sizeof(vertices));
 		//m_VertexBuffer->Bind();
 
 		Above::BufferLayout layout =
@@ -38,9 +37,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		Above::Ref<Above::IndexBuffer> indexBuffer;
-
-		indexBuffer.reset(Above::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		Above::Ref<Above::IndexBuffer> indexBuffer = Above::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		m_SquareVA = Above::VertexArray::Create();
@@ -53,8 +50,7 @@ public:
 			-.5f,  .5f, 0.0f, 0.0f, 1.0f
 		};
 
-		Above::Ref<Above::VertexBuffer> squareVB;
-		squareVB.reset(Above::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		Above::Ref<Above::VertexBuffer> squareVB = Above::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout(
 			{
 			{Above::ShaderDataType::Float3, "a_Position"},
@@ -64,8 +60,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		Above::Ref<Above::IndexBuffer> squareIB;
-		squareIB.reset(Above::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		Above::Ref<Above::IndexBuffer> squareIB = Above::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
