@@ -21,6 +21,9 @@ private:
 	Above::Ref<Above::VertexArray> m_SquareVA;
 	Above::Ref<Above::Shader> m_FlatColorShader;
 	Above::Ref<Above::Texture2D> m_CheckerboardTexture;
+	Above::Ref<Above::Texture2D> m_SpriteSheet;
+
+	Above::Ref<Above::SubTexture2D> m_SubTexture;
 
 	struct ProfileResult
 	{

@@ -18,6 +18,9 @@ void Sandbox2D::OnAttach()
 	AB_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = Above::Texture2D::Create("assets/textures/checkerboard.png");
+	m_SpriteSheet = Above::Texture2D::Create("assets/game/textures/tilemap_packed.png");
+
+	m_SubTexture = Above::SubTexture2D::CreateFromCoords(m_SpriteSheet, {31,2}, {16,16}, {3, 2});
 }
 
 void Sandbox2D::OnDetach()
@@ -29,7 +32,7 @@ void Sandbox2D::OnDetach()
 void Sandbox2D::OnUpdate(Above::Timestep timestep)
 {
 	AB_PROFILE_FUNCTION();
-	
+
 	m_CameraController.OnUpdate(timestep);
 
 	Above::Renderer2D::ResetStats();
@@ -41,6 +44,7 @@ void Sandbox2D::OnUpdate(Above::Timestep timestep)
 		Above::RenderCommand::Clear();
 	}
 
+#if 0
 	{
 		AB_PROFILE_SCOPE("Render Draw");
 
@@ -51,19 +55,19 @@ void Sandbox2D::OnUpdate(Above::Timestep timestep)
 
 		//Above::Renderer2D::DrawRotatedQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, 45.f, { 0.8f, .2f, .3f, 1.f });
 		Above::Renderer2D::DrawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, { 0.8f, .2f, .3f, 1.f });
-		Above::Renderer2D::DrawRotatedQuad({ 0.5f, -0.5f },  { 0.5f, 0.75f }, glm::radians(rotation), { 0.2f, .3f, .8f, 1.f });
+		Above::Renderer2D::DrawRotatedQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, glm::radians(rotation), { 0.2f, .3f, .8f, 1.f });
 		Above::Renderer2D::DrawQuad({ 0.2f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 12.0f, { 0.2f, 0.15f, 0.2f, 1.0f });
 		Above::Renderer2D::DrawRotatedQuad({ -0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 45.f, m_CheckerboardTexture, 1.0f);
 
 		Above::Renderer2D::EndScene();
 
 		Above::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		for(int y = -15; y < 15; y++)
+		for (int y = -15; y < 15; y++)
 		{
 			for (int x = -15; x < 15; x++)
 			{
-				float r = ( ((float)x + 15.f) / 30.f );
-				float g = ( ((float)y + 15.f) / 30.f );
+				float r = (((float)x + 15.f) / 30.f);
+				float g = (((float)y + 15.f) / 30.f);
 				float b = 1.f;
 				float a = 0.8f;
 
@@ -73,7 +77,27 @@ void Sandbox2D::OnUpdate(Above::Timestep timestep)
 		}
 
 		Above::Renderer2D::EndScene();
-	}
+		}
+#endif
+
+		Above::Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+		static glm::vec2 position = glm::vec2(0);
+		static float directionSign = 1;
+		static float multiplier = 1;
+		if(position.x < -1.f || position.x > 1.f)
+		{
+			directionSign *= -1;
+		}
+		multiplier = (1 - glm::abs(position.x)) + 0.25f;
+		position += timestep * 0.5 * directionSign * multiplier;
+
+		for(int i = -1; i < 1; ++i)
+		{
+			Above::Renderer2D::DrawQuad({ i * 1.25f + position.x, 0.0f, i * 0.002f}, {1.5f, 1.0f}, m_SubTexture, 1.0f);
+		}
+		//Above::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, m_SpriteSheet, 1.0f);
+		Above::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()
