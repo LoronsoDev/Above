@@ -2,7 +2,7 @@
 
 #include "abpch.h"
 
-#include "Above/Core.h"
+#include "Above/Core/Core.h"
 #include "Above/Events/Event.h"
 
 namespace Above
@@ -23,7 +23,7 @@ namespace Above
 	};
 
 	// Intereface representing a desktop system based window.
-	class ABOVE_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;

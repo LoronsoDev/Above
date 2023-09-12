@@ -23,9 +23,8 @@ namespace Above
 		//@Loren
 		//I've been doing a bit of research on this as only some computers need a cast to char*
 		// AFAIK:
-		//Depending on the order of the linking proccess/includes, glGetString can conflict with the logger
-		//as it won't know if GLubyte == const unsigned char*. It will try a static_cast and it will
-		//retrieve an error, as it's not doable as far as it knows at that point.
+		//Seems like Visual Studio is in some form using the Windows SDK to compile.
+		//Not casting this throws problems in W11 but not in W10.
 		AB_CORE_INFO("    Vendor: {0}", reinterpret_cast<const char*>	(glGetString(GL_VENDOR)));
 		AB_CORE_INFO("    Renderer: {0}", reinterpret_cast<const char*>	(glGetString(GL_RENDERER)));
 		AB_CORE_INFO("    Version {0}", reinterpret_cast<const char*>	(glGetString(GL_VERSION)));
@@ -33,6 +32,7 @@ namespace Above
 
 	void OpenGLContext::SwapBuffers()
 	{
+		AB_PROFILE_FUNCTION();
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }

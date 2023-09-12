@@ -18,10 +18,11 @@ IncludeDir["GLFW"]	= "Above/vendor/GLFW/include"
 IncludeDir["Glad"]	= "Above/vendor/Glad/include"
 IncludeDir["ImGui"] = "Above/vendor/imgui"
 IncludeDir["glm"] = "Above/vendor/glm"
+IncludeDir["stb_image"] = "Above/vendor/stb_image"
 
 group "Dependencies"
-	include "Above/vendor/GLFW"
 	include "Above/vendor/Glad"
+	include "Above/vendor/glfw"
 	include "Above/vendor/imgui"
 
 group ""
@@ -33,7 +34,7 @@ group ""
 		kind "StaticLib"
 		language "C++"
 		cppdialect "C++17"
-		staticruntime "on" 
+		staticruntime "off" 
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -47,12 +48,15 @@ group ""
 			"%{prj.name}/src/**.hpp",
 			"%{prj.name}/src/**.hxx",
 			"%{prj.name}/src/**.cpp",
+			"%{prj.name}/vendor/stb_image/**.cpp",
+			"%{prj.name}/vendor/stb_image/**.h",
 			"%{prj.name}/vendor/glm/glm/**.inl",
 			"%{prj.name}/vendor/glm/glm/**.hpp"
 		}
 
 		defines
 		{
+			"AB_PLATFORM_WINDOWS",
 			"_CRT_SECURE_NO_WARNINGS"
 		}
 
@@ -63,7 +67,8 @@ group ""
 			"%{IncludeDir.GLFW}",
 			"%{IncludeDir.Glad}",
 			"%{IncludeDir.ImGui}",
-			"%{IncludeDir.glm}"
+			"%{IncludeDir.glm}",
+			"%{IncludeDir.stb_image}"
 		}
 
 		links
@@ -109,11 +114,16 @@ group ""
 		kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++17"
-		staticruntime "on"
+		staticruntime "off"
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+		links
+		{
+			"Above"
+		}
+		
 		files
 		{
 			"%{prj.name}/src/**.h",
@@ -126,12 +136,8 @@ group ""
 		{
 			"Above/vendor/spdlog/include",
 			"Above/src",
+			"Above/vendor",
 			"%{IncludeDir.glm}"
-		}
-
-		links
-		{
-			"ABOVE"
 		}
 
 		--Windows projects

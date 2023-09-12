@@ -3,22 +3,20 @@
 #include "Core.h"
 
 #include "Window.h"
-#include "Above/LayerStack.h"
+#include "Above/Core/LayerStack.h"
 #include "Above/Events/Event.h"
 #include "Above/Events/ApplicationEvent.h"
 
 #include "Above/ImGui/ImGuiLayer.h"
 
-//TEMP
-#include "Above/Renderer/Shader.h"
-#include "Above/Renderer/Buffer.h"
+#include <Above/Core/Timestep.h>
 
 namespace Above
 {
 	/// <summary>
 	/// Defines the common behaviour for all apps.
 	/// </summary>
-	class ABOVE_API Application
+	class Application
 	{
 	public:
 
@@ -37,17 +35,16 @@ namespace Above
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
+	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
+		bool m_Minimized = false;
 		LayerStack m_LayerStack;
+		float m_LastFrameTime = 0.0f; //Time that it took to render last frame
 
-		unsigned int m_VertexArray;
-		std::unique_ptr<Shader> m_Shader;
-
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 	private:
 		static Application* s_Instance;
 	};

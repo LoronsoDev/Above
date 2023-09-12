@@ -1,5 +1,5 @@
 #pragma once
-#include "Above/Layer.h"
+#include "Above/Core/Layer.h"
 #include "Above/Events/Event.h"
 
 #include "Above/Events/ApplicationEvent.h"
@@ -16,7 +16,6 @@ namespace Above
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
-		virtual void OnImGuiRender() override;
 
 		void Begin();
 		void End();

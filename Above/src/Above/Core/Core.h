@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef AB_PLATFORM_WINDOWS
 
 	#if AB_DYNAMIC_LINK
@@ -31,3 +33,18 @@
 #define BIT(x) (1 << x)
 
 #define AB_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+namespace Above
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+
+	template <typename T, typename ... Args>
+	constexpr Ref<T> CreateRef(Args&& ... args)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
+}
