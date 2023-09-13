@@ -23,7 +23,18 @@ private:
 	Above::Ref<Above::Texture2D> m_CheckerboardTexture;
 	Above::Ref<Above::Texture2D> m_SpriteSheet;
 
-	Above::Ref<Above::SubTexture2D> m_SubTexture;
+	Above::Ref<Above::SubTexture2D> m_StreetTopEdge_ST;
+	Above::Ref<Above::SubTexture2D> m_Street_ST;
+	Above::Ref<Above::SubTexture2D> m_StreetBottomEdge_ST;
+
+	Above::Ref<Above::SubTexture2D> m_RoadTopEdge_ST;
+	Above::Ref<Above::SubTexture2D> m_MainRoad_ST;
+	Above::Ref<Above::SubTexture2D> m_RoadMiddle_ST;
+
+	Above::Ref<Above::Framebuffer> m_Framebuffer;
+
+	// The tilemap we're using has 1036 available tiles
+	std::array<Above::Ref<Above::SubTexture2D>, 'Z'> m_MapElements{};
 
 	struct ProfileResult
 	{

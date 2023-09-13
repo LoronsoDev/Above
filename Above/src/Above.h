@@ -23,6 +23,7 @@
 
 #include <Above/Renderer/Buffer.h>
 #include <Above/Renderer/Shader.h>
+#include <Above/Renderer/Framebuffer.h>
 #include <Above/Renderer/Texture.h>
 #include <Above/Renderer/SubTexture2D.h>
 #include <Above/Renderer/VertexArray.h>
