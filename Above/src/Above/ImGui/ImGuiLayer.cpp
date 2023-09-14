@@ -66,6 +66,16 @@ namespace Above
         ImGui::DestroyContext();
 	}
 
+    void ImGuiLayer::OnEvent(Event& e)
+    {
+        if(m_BlockEvents)
+        {
+            ImGuiIO& io = ImGui::GetIO();
+            e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+            e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureKeyboard;
+        }
+    }
+
     void ImGuiLayer::Begin()
     {
         AB_PROFILE_FUNCTION();
