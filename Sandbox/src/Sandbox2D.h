@@ -31,8 +31,6 @@ private:
 	Above::Ref<Above::SubTexture2D> m_MainRoad_ST;
 	Above::Ref<Above::SubTexture2D> m_RoadMiddle_ST;
 
-	Above::Ref<Above::Framebuffer> m_Framebuffer;
-
 	// The tilemap we're using has 1036 available tiles
 	std::array<Above::Ref<Above::SubTexture2D>, 'Z'> m_MapElements{};
 

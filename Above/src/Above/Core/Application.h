@@ -20,7 +20,7 @@ namespace Above
 	{
 	public:
 
-		Application();
+		Application(const std::string& name = "ABOVE engine app");
 		virtual ~Application();
 
 		void Run();

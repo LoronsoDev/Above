@@ -16,6 +16,8 @@ namespace Above
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
 
+		void ResizeBounds(float width, float height);
+
 		OrthographicCamera& GetCamera() { return m_Camera; }
 		const OrthographicCamera& GetCamera() const { return m_Camera; }
 

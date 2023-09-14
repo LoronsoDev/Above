@@ -56,6 +56,12 @@ namespace Above
 
 	}
 
+	void OrthographicCameraController::ResizeBounds(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		CalculateProjection();
+	}
+
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
 		AB_PROFILE_FUNCTION();
