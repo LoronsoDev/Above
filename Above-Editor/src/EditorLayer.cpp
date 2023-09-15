@@ -61,6 +61,14 @@ namespace Above
 		m_MapElements['D'] = m_StreetBottomEdge_ST;
 
 		m_CameraController.SetZoomLevel(5.00f);
+
+		m_ActiveScene = CreateRef<Scene>();
+
+		auto square = m_ActiveScene->CreateEntity();
+		m_ActiveScene->Reg().emplace<TransformComponent>(square);
+		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, glm::vec4{0.0f, 1.0f, 0.0f, 1.0f});
+
+		m_SquareEntity = square;
 	}
 
 	void EditorLayer::OnDetach()
@@ -76,84 +84,48 @@ namespace Above
 		if(m_ViewportFocused)
 			m_CameraController.OnUpdate(timestep);
 
-		Renderer2D::ResetStats();
-		{
-			AB_PROFILE_SCOPE("Renderer Prep");
-
-			//render
-			m_Framebuffer->Bind();
-			RenderCommand::SetClearColor({ .1f, .1f, .1f, 1.0f });
-			RenderCommand::Clear();
-		}
-
-#if 0
-		{
-			AB_PROFILE_SCOPE("Render Draw");
-
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-			static float rotation = 0.0f;
-			rotation += timestep * 25.f;
-
-			//Renderer2D::DrawRotatedQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, 45.f, { 0.8f, .2f, .3f, 1.f });
-			Renderer2D::DrawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, { 0.8f, .2f, .3f, 1.f });
-			Renderer2D::DrawRotatedQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, glm::radians(rotation), { 0.2f, .3f, .8f, 1.f });
-			Renderer2D::DrawQuad({ 0.2f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 12.0f, { 0.2f, 0.15f, 0.2f, 1.0f });
-			Renderer2D::DrawRotatedQuad({ -0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 45.f, m_CheckerboardTexture, 1.0f);
-
-			Renderer2D::EndScene();
-
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			for (int y = -15; y < 15; y++)
-			{
-				for (int x = -15; x < 15; x++)
-				{
-					float r = (((float)x + 15.f) / 30.f);
-					float g = (((float)y + 15.f) / 30.f);
-					float b = 1.f;
-					float a = 0.8f;
-
-					glm::vec4 color(r, g, b, a);
-					Renderer2D::DrawRotatedQuad({ (float)-y * 0.125f, (float)-x * 0.125f, 0.2f }, { 0.25f, 0.25f }, rotation, m_CheckerboardTexture, 1.0f, color);
-				}
-			}
-
-			Renderer2D::EndScene();
-		}
-#endif
+		//render
+		m_Framebuffer->Bind();
+		RenderCommand::SetClearColor({ .1f, .1f, .1f, 1.0f });
+		RenderCommand::Clear();
+		
 
 		Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		const int road_length = 5;
+		//Update scene
+		m_ActiveScene->OnUpdate(timestep);
 
-		for (int road_n = 0; road_n < road_length; ++road_n)
-		{
-			for (int i = 0; i < s_MapHeight * s_MapWidth; ++i)
-			{
-				glm::vec3 position = { ((s_MapWidth * road_n) - (i % s_MapWidth)), s_MapHeight - (i / s_MapWidth), -i * 0.001f };
-				position -= glm::vec3{ (float)s_MapWidth / 2.f, ((float)s_MapHeight / 2.f), 0.f };
-
-				float rotation = 0.0f;
-
-				switch (s_MapTiles[i])
-				{
-				case 'B': //Road (bottom)
-					rotation = glm::radians(180.f);
-					break;
-				}
-
-				Renderer2D::DrawRotatedQuad(position, { 1.0f, 1.0f }, rotation, m_MapElements[s_MapTiles[i]], 1.0f);
-			}
-		}
-
-
-		/*Renderer2D::DrawQuad({ position.x, position.y, 0.0f}, {1.0f, 1.0f}, m_Street_ST, 1.0f);
-		Renderer2D::DrawQuad({ position.x, position.y - 1.0f, 0.0f}, {1.0f, 1.0f}, m_StreetBottomEdge_ST, 1.0f);
-		Renderer2D::DrawQuad({ position.x, position.y - 2.0f, 0.0f}, {1.0f, 1.0f}, m_RoadTopEdge_ST, 1.0f);*/
-
-
-		//Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, m_SpriteSheet, 1.0f);
 		Renderer2D::EndScene();
+
+		////AB_PROFILE_SCOPE("Render Draw"); //atm has a bug in some compilers (for example in W11 compiler), it's not concatenating macro ##__LINE__
+		//{
+		//	Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+		//	const int road_length = 5;
+
+		//	for (int road_n = 0; road_n < road_length; ++road_n)
+		//	{
+		//		for (int i = 0; i < s_MapHeight * s_MapWidth; ++i)
+		//		{
+		//			glm::vec3 position = { ((s_MapWidth * road_n) - (i % s_MapWidth)), s_MapHeight - (i / s_MapWidth), -i * 0.001f };
+		//			position -= glm::vec3{ (float)s_MapWidth / 2.f, ((float)s_MapHeight / 2.f), 0.f };
+
+		//			float rotation = 0.0f;
+
+		//			switch (s_MapTiles[i])
+		//			{
+		//			case 'B': //Road (bottom)
+		//				rotation = glm::radians(180.f);
+		//				break;
+		//			}
+
+		//			Renderer2D::DrawRotatedQuad(position, { 1.0f, 1.0f }, rotation, m_MapElements[s_MapTiles[i]], 1.0f);
+		//		}
+		//	}
+
+		//	Renderer2D::EndScene();
+		//}
+
 		m_Framebuffer->Unbind();
 	}
 
@@ -229,7 +201,8 @@ namespace Above
 			}
 
 			ImGui::Begin("Settings");
-			ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+			auto& squareColor = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SquareEntity).Color;
+			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
 			ImGui::End();
 
 			auto stats = Renderer2D::GetStats();

@@ -19,6 +19,7 @@ IncludeDir["Glad"]	= "Above/vendor/Glad/include"
 IncludeDir["ImGui"] = "Above/vendor/imgui"
 IncludeDir["glm"] = "Above/vendor/glm"
 IncludeDir["stb_image"] = "Above/vendor/stb_image"
+IncludeDir["entt"] = "Above/vendor/entt/include"
 
 group "Dependencies"
 	include "Above/vendor/Glad"
@@ -68,7 +69,8 @@ group ""
 			"%{IncludeDir.Glad}",
 			"%{IncludeDir.ImGui}",
 			"%{IncludeDir.glm}",
-			"%{IncludeDir.stb_image}"
+			"%{IncludeDir.stb_image}",
+			"%{IncludeDir.entt}",
 		}
 
 		links
@@ -137,6 +139,7 @@ group ""
 			"Above/vendor/spdlog/include",
 			"Above/src",
 			"Above/vendor",
+			"%{IncludeDir.entt}",
 			"%{IncludeDir.glm}"
 		}
 
@@ -194,6 +197,7 @@ group ""
 			"Above/vendor/spdlog/include",
 			"Above/src",
 			"Above/vendor",
+			"%{IncludeDir.entt}",
 			"%{IncludeDir.glm}"
 		}
 

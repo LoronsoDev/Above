@@ -1428,9 +1428,14 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Above\Scene\Scene.h" />
+    <ClInclude Include="src\Above\Scene\Components.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Above\Core\Application.cpp">
+      <Filter>src\Above\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Above\Core\Input.cpp">
       <Filter>src\Above\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Above\Core\Layer.cpp">
@@ -1517,6 +1522,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Above\Core\Input.cpp" />
+    <ClCompile Include="src\Above\Scene\Scene.cpp" />
   </ItemGroup>
 </Project>
