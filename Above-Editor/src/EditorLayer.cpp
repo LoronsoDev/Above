@@ -68,11 +68,11 @@ namespace Above
 		m_Square.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f, 1.0f, 0.8f, 1.0f));
 
 		m_Camera = m_ActiveScene->CreateEntity("Camera Entity");
-		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>(glm::ortho(-16.f, 16.0f, -9.f, 9.0f, -100.f, 100.f));
+		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>();
 		cameraComponent.Primary = true;
 
-		m_SecondCamera = m_ActiveScene->CreateEntity("Clipspace camera");
-		auto& secondCameraComponent = m_SecondCamera.AddComponent<CameraComponent>(glm::ortho(-1.f, 1.0f, -1.f, 1.0f, -100.f, 100.f));
+		m_SecondCamera = m_ActiveScene->CreateEntity("Clipspace camera entity");
+		auto& secondCameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
 	}
 
 	void EditorLayer::OnDetach()
@@ -85,14 +85,23 @@ namespace Above
 	{
 		AB_PROFILE_FUNCTION();
 
+		if(FramebufferProperties fbProps = m_Framebuffer->GetProperties();
+			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
+			(fbProps.Width != m_ViewportSize.x || fbProps.Height != m_ViewportSize.y))
+		{
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_CameraController.ResizeBounds(m_ViewportSize.x, m_ViewportSize.y);
+
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		}
 
 		/*if(m_ViewportFocused)
 			m_CameraController.OnUpdate(timestep);*/
 
 		//render
 
-		Renderer2D::ResetStats();
 		m_Framebuffer->Bind();
+		Renderer2D::ResetStats();
 		RenderCommand::SetClearColor({ .1f, .1f, .1f, 1.0f });
 		RenderCommand::Clear();
 
@@ -185,12 +194,21 @@ namespace Above
 
 			ImGui::DragFloat3("Camera transform", glm::value_ptr(m_Camera.GetComponent<TransformComponent>().Transform[3]));
 
-			static bool clipCamera = false;
+			static bool mainCameraActive = false;
 
-			if (ImGui::Checkbox("Clip camera", &clipCamera))
+			if (ImGui::Checkbox("Camera A", &mainCameraActive))
 			{
-				m_SecondCamera.GetComponent<CameraComponent>().Primary = clipCamera;
-				m_Camera.GetComponent<CameraComponent>().Primary = !clipCamera;
+				m_SecondCamera.GetComponent<CameraComponent>().Primary = mainCameraActive;
+				m_Camera.GetComponent<CameraComponent>().Primary = !mainCameraActive;
+			}
+
+			{
+				auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
+				float orthoSize = camera.GetOrthographicSize();
+				if(ImGui::DragFloat("Second camera ortho size", &orthoSize))
+				{
+					camera.SetOrthographicSize(orthoSize);
+				}
 			}
 			ImGui::Separator();
 
@@ -217,13 +235,7 @@ namespace Above
 			Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 			ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-			if (m_ViewportSize != *((glm::vec2*)&viewportSize))
-			{
-				m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
-				m_ViewportSize = { viewportSize.x, viewportSize.y };
-
-				m_CameraController.ResizeBounds(viewportSize.x, viewportSize.y);
-			}
+			m_ViewportSize = { viewportSize.x, viewportSize.y };
 
 			uint32_t texID = m_Framebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)texID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });

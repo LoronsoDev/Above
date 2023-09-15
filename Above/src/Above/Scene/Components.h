@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include <Above/Renderer/Camera.h>
+#include "SceneCamera.h"
 
 namespace Above
 {
@@ -38,11 +38,11 @@ namespace Above
 
 	struct CameraComponent
 	{
-		Above::Camera Camera;
+		SceneCamera Camera;
 		bool Primary = false;
+		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const glm::mat4& projection) : Camera(projection) {}
 	};
 }

@@ -9,12 +9,11 @@ namespace Above
 	public:
 		Entity() = default;
 		Entity(entt::entity handle, Scene* scene);
-		Entity(const Entity& other);
 
 		template <typename T>
-		void HasComponent()
+		bool HasComponent()
 		{
-			m_Scene->m_Registry.has<T>(m_EntityHandle);
+			return m_Scene->m_Registry.all_of<T>(m_EntityHandle);
 		}
 
 		template <typename T, typename... Args>
@@ -27,14 +26,14 @@ namespace Above
 		template <typename T>
 		T& GetComponent()
 		{
-			AB_CORE_ASSERT(!HasComponent<T>(), "Entity does not have component!");
+			AB_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
 			return m_Scene->m_Registry.get<T>(m_EntityHandle);
 		}
 
 		template <typename T>
 		void RemoveComponent()
 		{
-			AB_CORE_ASSERT(!HasComponent<T>(), "Entity does not have component!");
+			AB_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 

@@ -8,6 +8,6 @@ namespace Above
 		m_EntityHandle(handle),
 		m_Scene(scene)
 	{
-
+		
 	}
 }
