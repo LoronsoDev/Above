@@ -64,11 +64,9 @@ namespace Above
 
 		m_ActiveScene = CreateRef<Scene>();
 
-		auto square = m_ActiveScene->CreateEntity();
-		m_ActiveScene->Reg().emplace<TransformComponent>(square);
-		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, glm::vec4{0.0f, 1.0f, 0.0f, 1.0f});
+		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
 
-		m_SquareEntity = square;
+		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.2f, .8f, 1.f, 1.f));
 	}
 
 	void EditorLayer::OnDetach()
@@ -80,6 +78,8 @@ namespace Above
 	void EditorLayer::OnUpdate(Timestep timestep)
 	{
 		AB_PROFILE_FUNCTION();
+
+		Renderer2D::ResetStats();
 
 		if(m_ViewportFocused)
 			m_CameraController.OnUpdate(timestep);
@@ -125,6 +125,8 @@ namespace Above
 
 		//	Renderer2D::EndScene();
 		//}
+
+		fps = 1.f / timestep;
 
 		m_Framebuffer->Unbind();
 	}
@@ -200,16 +202,22 @@ namespace Above
 				ImGui::EndMenuBar();
 			}
 
-			ImGui::Begin("Settings");
-			auto& squareColor = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SquareEntity).Color;
-			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
-			ImGui::End();
 
+			ImGui::Begin("Settings");
+			if (m_SquareEntity)
+			{
+				auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+				ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
+				ImGui::Separator();
+			}
+			ImGui::End();
+			
 			auto stats = Renderer2D::GetStats();
 			ImGui::Begin("Statistics");
 			{
 				ImGui::Text("Renderer2D stats:");
-				ImGui::Text("Draw Calls: %d:", stats.Drawcalls);
+				ImGui::Text("FPS: %d", (uint32_t)fps);
+				ImGui::Text("Draw Calls: %d", stats.Drawcalls);
 				ImGui::Text("Quads: %d", stats.QuadCount);
 				ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 				ImGui::Text("Indices: %d", stats.GetTotalIndexCount());

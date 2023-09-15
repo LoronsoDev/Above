@@ -175,6 +175,7 @@
     <ClInclude Include="src\Above\Renderer\Texture.h" />
     <ClInclude Include="src\Above\Renderer\VertexArray.h" />
     <ClInclude Include="src\Above\Scene\Components.h" />
+    <ClInclude Include="src\Above\Scene\Entity.h" />
     <ClInclude Include="src\Above\Scene\Scene.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -623,6 +624,7 @@
     <ClCompile Include="src\Above\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="src\Above\Renderer\Texture.cpp" />
     <ClCompile Include="src\Above\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Above\Scene\Entity.cpp" />
     <ClCompile Include="src\Above\Scene\Scene.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />

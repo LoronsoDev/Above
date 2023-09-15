@@ -1,6 +1,8 @@
 #include <abpch.h>
 #include <Above/Scene/Scene.h>
 
+#include <Above/Scene/Entity.h>
+
 namespace Above
 {
 	Scene::Scene()
@@ -13,9 +15,14 @@ namespace Above
 		 
 	}
 
-	entt::entity Scene::CreateEntity()
+	Entity Scene::CreateEntity(const std::string& name)
 	{
-		return m_Registry.create();
+		Entity entity = Entity{ m_Registry.create(), this };
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Entity" : name;
+		
+		return entity;
 	}
 
 	void Scene::OnUpdate(Timestep ts)

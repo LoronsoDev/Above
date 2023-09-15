@@ -16,6 +16,7 @@
 #include "Above/ImGui/ImGuiLayer.h"
 
 #include <Above/Scene/Scene.h>
+#include <Above/Scene/Entity.h>
 #include <Above/Scene/Components.h>
 
 //------------------Renderer---------------------------
