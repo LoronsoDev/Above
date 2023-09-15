@@ -64,9 +64,15 @@ namespace Above
 
 		m_ActiveScene = CreateRef<Scene>();
 
-		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
+		m_Square = m_ActiveScene->CreateEntity("Square");
+		m_Square.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f, 1.0f, 0.8f, 1.0f));
 
-		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.2f, .8f, 1.f, 1.f));
+		m_Camera = m_ActiveScene->CreateEntity("Camera Entity");
+		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>(glm::ortho(-16.f, 16.0f, -9.f, 9.0f, -100.f, 100.f));
+		cameraComponent.Primary = true;
+
+		m_SecondCamera = m_ActiveScene->CreateEntity("Clipspace camera");
+		auto& secondCameraComponent = m_SecondCamera.AddComponent<CameraComponent>(glm::ortho(-1.f, 1.0f, -1.f, 1.0f, -100.f, 100.f));
 	}
 
 	void EditorLayer::OnDetach()
@@ -79,55 +85,21 @@ namespace Above
 	{
 		AB_PROFILE_FUNCTION();
 
-		Renderer2D::ResetStats();
 
-		if(m_ViewportFocused)
-			m_CameraController.OnUpdate(timestep);
+		/*if(m_ViewportFocused)
+			m_CameraController.OnUpdate(timestep);*/
 
 		//render
+
+		Renderer2D::ResetStats();
 		m_Framebuffer->Bind();
 		RenderCommand::SetClearColor({ .1f, .1f, .1f, 1.0f });
 		RenderCommand::Clear();
-		
-
-		Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 		//Update scene
 		m_ActiveScene->OnUpdate(timestep);
 
-		Renderer2D::EndScene();
-
-		////AB_PROFILE_SCOPE("Render Draw"); //atm has a bug in some compilers (for example in W11 compiler), it's not concatenating macro ##__LINE__
-		//{
-		//	Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-		//	const int road_length = 5;
-
-		//	for (int road_n = 0; road_n < road_length; ++road_n)
-		//	{
-		//		for (int i = 0; i < s_MapHeight * s_MapWidth; ++i)
-		//		{
-		//			glm::vec3 position = { ((s_MapWidth * road_n) - (i % s_MapWidth)), s_MapHeight - (i / s_MapWidth), -i * 0.001f };
-		//			position -= glm::vec3{ (float)s_MapWidth / 2.f, ((float)s_MapHeight / 2.f), 0.f };
-
-		//			float rotation = 0.0f;
-
-		//			switch (s_MapTiles[i])
-		//			{
-		//			case 'B': //Road (bottom)
-		//				rotation = glm::radians(180.f);
-		//				break;
-		//			}
-
-		//			Renderer2D::DrawRotatedQuad(position, { 1.0f, 1.0f }, rotation, m_MapElements[s_MapTiles[i]], 1.0f);
-		//		}
-		//	}
-
-		//	Renderer2D::EndScene();
-		//}
-
 		fps = 1.f / timestep;
-
 		m_Framebuffer->Unbind();
 	}
 
@@ -204,12 +176,24 @@ namespace Above
 
 
 			ImGui::Begin("Settings");
-			if (m_SquareEntity)
+			if (m_Square)
 			{
-				auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+				auto& squareColor = m_Square.GetComponent<SpriteRendererComponent>().Color;
 				ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
 				ImGui::Separator();
 			}
+
+			ImGui::DragFloat3("Camera transform", glm::value_ptr(m_Camera.GetComponent<TransformComponent>().Transform[3]));
+
+			static bool clipCamera = false;
+
+			if (ImGui::Checkbox("Clip camera", &clipCamera))
+			{
+				m_SecondCamera.GetComponent<CameraComponent>().Primary = clipCamera;
+				m_Camera.GetComponent<CameraComponent>().Primary = !clipCamera;
+			}
+			ImGui::Separator();
+
 			ImGui::End();
 			
 			auto stats = Renderer2D::GetStats();

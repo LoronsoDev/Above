@@ -10,7 +10,6 @@ namespace Above
 		Entity() = default;
 		Entity(entt::entity handle, Scene* scene);
 		Entity(const Entity& other);
-		~Entity();
 
 		template <typename T>
 		void HasComponent()
@@ -39,11 +38,10 @@ namespace Above
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
-		operator bool() const { return exists; }
+		operator bool() const { return m_EntityHandle != entt::null; }
 
 	private:
-		bool exists = false;
-		entt::entity m_EntityHandle;
+		entt::entity m_EntityHandle{ entt::null };
 		Scene* m_Scene = nullptr; //should be weak_ptr but I want to rewrite the garbage collector so let's just use pointers for now
 	};
 }

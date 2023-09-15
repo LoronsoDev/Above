@@ -8,11 +8,6 @@ namespace Above
 		m_EntityHandle(handle),
 		m_Scene(scene)
 	{
-		exists = true;
-	}
 
-	Entity::~Entity()
-	{
-		exists = false;
 	}
 }

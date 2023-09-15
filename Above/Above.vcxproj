@@ -162,6 +162,7 @@
     <ClInclude Include="src\Above\Events\MouseEvent.h" />
     <ClInclude Include="src\Above\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Above\Renderer\Buffer.h" />
+    <ClInclude Include="src\Above\Renderer\Camera.h" />
     <ClInclude Include="src\Above\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Above\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Above\Renderer\OrthographicCamera.h" />

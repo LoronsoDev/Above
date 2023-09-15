@@ -3,6 +3,8 @@
 #include <Above/Renderer/Texture.h>
 #include <Above/Renderer/SubTexture2D.h>
 
+#include <Above/Renderer/Camera.h>
+
 namespace Above
 {
 	class Renderer2D
@@ -11,7 +13,8 @@ namespace Above
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+		static void BeginScene(const OrthographicCamera& camera); // Remove
 		static void EndScene();
 		static void Flush();
 

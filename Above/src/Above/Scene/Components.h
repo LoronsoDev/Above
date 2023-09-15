@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include <Above/Renderer/Camera.h>
+
 namespace Above
 {
 	struct TagComponent
@@ -12,6 +14,7 @@ namespace Above
 		TagComponent(const TagComponent&) = default;
 		TagComponent(const std::string& tag) : Tag(tag) {}
 	};
+
 	struct TransformComponent
 	{
 		glm::mat4 Transform = glm::mat4(1);
@@ -31,5 +34,15 @@ namespace Above
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
+	};
+
+	struct CameraComponent
+	{
+		Above::Camera Camera;
+		bool Primary = false;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const glm::mat4& projection) : Camera(projection) {}
 	};
 }

@@ -36,7 +36,9 @@ namespace Above
 		Ref<Framebuffer> m_Framebuffer;
 		Ref<Scene> m_ActiveScene;
 
-		Above::Entity m_SquareEntity;
+		Entity m_Square;
+		Entity m_Camera;
+		Entity m_SecondCamera;
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 
