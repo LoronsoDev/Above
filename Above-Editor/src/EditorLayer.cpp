@@ -114,6 +114,7 @@ namespace Above
 
 		m_Camera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::OnDetach()
@@ -193,7 +194,7 @@ namespace Above
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 		if (!opt_padding)
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
+		ImGui::Begin("DockSpace", &dockspaceOpen, window_flags);
 
 		{
 			if (!opt_padding)
@@ -256,6 +257,7 @@ namespace Above
 				}
 			}
 
+			m_SceneHierarchyPanel.OnImGuiRender();
 
 			ImGui::Begin("Settings");
 			if (m_Square)
