@@ -70,6 +70,9 @@ namespace Above
 		auto entity2 = m_ActiveScene->CreateEntity("Green Square");
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
+		auto entity3 = m_ActiveScene->CreateEntity("Blue Square");
+		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 0.0f, 0.7f, 1.0f));
+
 		m_Camera = m_ActiveScene->CreateEntity("Camera A");
 		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>();
 		cameraComponent.Primary = true;

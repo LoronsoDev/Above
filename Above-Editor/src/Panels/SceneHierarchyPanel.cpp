@@ -332,8 +332,8 @@ namespace Above
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
 			bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Sprite Renderer");
-			ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
-			if (ImGui::Button("+", ImVec2{20,20}))
+			ImGui::SameLine(ImGui::GetWindowWidth() - 45.0f);
+			if (ImGui::Button("...", ImVec2{28,20}))
 			{
 				ImGui::OpenPopup("ComponentSettings");
 			}

@@ -78,7 +78,7 @@ namespace Above
 		{
 			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			auto group = m_Registry.group<>(entt::get<TransformComponent, SpriteRendererComponent>);
 			for (auto entity : group)
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
