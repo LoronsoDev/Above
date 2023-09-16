@@ -73,6 +73,47 @@ namespace Above
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Clipspace camera entity");
 		auto& secondCameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
+
+
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			void OnCreate()
+			{
+			}
+
+			void OnDestroy()
+			{
+
+			}
+			void OnUpdate(Timestep ts)
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				float speed = 5.f;
+
+				if(Input::IsKeyPressed(AB_KEY_W))
+				{
+					transform[3][1] += speed * ts;
+				}
+				if (Input::IsKeyPressed(AB_KEY_A))
+				{
+					transform[3][0] -= speed * ts;
+				}
+				if (Input::IsKeyPressed(AB_KEY_S))
+				{
+					transform[3][1] -= speed * ts;
+				}
+				if (Input::IsKeyPressed(AB_KEY_D))
+				{
+					transform[3][0] += speed * ts;
+				}
+			}
+
+			
+		};
+
+		m_Camera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
 	}
 
 	void EditorLayer::OnDetach()
@@ -168,6 +209,7 @@ namespace Above
 				ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 			}
+			static bool showShaderEdit = false;
 
 			if (ImGui::BeginMenuBar())
 			{
@@ -179,8 +221,39 @@ namespace Above
 					ImGui::EndMenu();
 				}
 
+				if (ImGui::BeginMenu("PROJECT"))
+				{
+					// Disabling fullscreen would allow the window to be moved to the front of other windows,
+					// which we can't undo at the moment without finer window depth/z control.
+					
+					if (ImGui::MenuItem("Postprocess layer"))
+					{
+						showShaderEdit = true;
+					} 
+					ImGui::EndMenu();
+				}
+
 
 				ImGui::EndMenuBar();
+
+				if (showShaderEdit)
+				{
+					ImGui::Begin("Postprocess shader");
+					ImGui::Columns(2);
+					if (ImGui::Button("Apply"))
+					{
+					}
+					ImGui::NextColumn();
+					if(ImGui::Button("x"))
+					{
+						showShaderEdit = false;
+					}
+					ImGui::Columns(1);
+					ImGui::Separator();
+					ImGui::InputTextMultiline("GLSL postprocess input field", shader, IM_ARRAYSIZE(shader), ImVec2(700,300));
+					ImGui::Separator();
+					ImGui::End();
+				}
 			}
 
 

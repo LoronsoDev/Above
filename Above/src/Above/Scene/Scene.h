@@ -1,12 +1,6 @@
 #pragma once
 
 #include <Above/Core/Timestep.h>
-
-#include <Above/Scene/Components.h>
-#include <Above/Renderer/Renderer2D.h>
-
-#include <glm/glm.hpp>
-
 #include <entt.hpp>
 
 namespace Above

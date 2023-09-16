@@ -2,6 +2,8 @@
 
 #include <Above/Scene/Scene.h>
 
+#include <entt.hpp>
+
 namespace Above
 {
 	class Entity

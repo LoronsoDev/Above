@@ -1,6 +1,11 @@
 #include <abpch.h>
 #include <Above/Scene/Scene.h>
 
+#include <Above/Scene/Components.h>
+#include <Above/Renderer/Renderer2D.h>
+
+#include <glm/glm.hpp>
+
 #include <Above/Scene/Entity.h>
 
 namespace Above
@@ -27,6 +32,22 @@ namespace Above
 
 	void Scene::OnUpdate(Timestep ts)
 	{
+		//Update scripts
+		{
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+				{
+					if(!nsc.Instance)
+					{
+						nsc.InstantiateFunction();
+						nsc.Instance->m_Entity = Entity{ entity, this };
+						nsc.OnCreateFunction(nsc.Instance);
+					}
+
+					nsc.OnUpdateFunction(nsc.Instance, ts);
+				});
+		}
+
+
 		//Render 2D
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;

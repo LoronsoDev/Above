@@ -39,6 +39,14 @@ namespace Above
 		Entity m_Square;
 		Entity m_Camera;
 		Entity m_SecondCamera;
+		char shader[1024] = 
+R"(
+#type vertex
+
+#type fragment
+
+
+)";
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 

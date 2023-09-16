@@ -2,7 +2,6 @@
 
 //ADAPTED FROM GLFW3.h
 
-
 /* The unknown key */
 #define AB_KEY_UNKNOWN            -1
 
