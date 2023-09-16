@@ -1,6 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "SceneCamera.h"
 #include <Above/Scene/ScriptableEntity.h>
 
@@ -17,14 +19,30 @@ namespace Above
 
 	struct TransformComponent
 	{
+		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
+
 		glm::mat4 Transform = glm::mat4(1);
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
-		TransformComponent(const glm::mat4& transform) : Transform(transform) {}
+		TransformComponent(const glm::vec3& translation) : Translation(translation) {}
 
-		operator glm::mat4& () { return Transform; }
-		operator const glm::mat4& () const { return Transform; }
+		glm::mat4 GetTransform() const
+		{
+			glm::mat4 transform = glm::mat4(1.0f);
+			
+			transform = glm::translate(transform, Translation);
+
+			transform = glm::rotate(transform, Rotation.x, { 1,0,0 });
+			transform = glm::rotate(transform, Rotation.y, { 0,1,0 });
+			transform = glm::rotate(transform, Rotation.z, { 0,0,1 });
+
+			transform = glm::scale(transform, Scale);
+
+			return transform;
+		}
 	};
 
 	struct SpriteRendererComponent
