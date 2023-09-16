@@ -64,8 +64,6 @@ R"(
 
 		std::vector<ProfileResult> m_ProfileResults;
 
-		glm::vec4 m_SquareColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
-
 		float fps = 0.0f;
 
 

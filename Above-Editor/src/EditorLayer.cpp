@@ -65,13 +65,16 @@ namespace Above
 		m_ActiveScene = CreateRef<Scene>();
 
 		m_Square = m_ActiveScene->CreateEntity("Square");
-		m_Square.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f, 1.0f, 0.8f, 1.0f));
+		m_Square.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f, 1.0f, 0.8f, 0.7f));
 
-		m_Camera = m_ActiveScene->CreateEntity("Camera Entity");
+		auto entity2 = m_ActiveScene->CreateEntity("Green Square");
+		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+		m_Camera = m_ActiveScene->CreateEntity("Camera A");
 		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>();
 		cameraComponent.Primary = true;
 
-		m_SecondCamera = m_ActiveScene->CreateEntity("Clipspace camera entity");
+		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& secondCameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
 
 
@@ -259,41 +262,12 @@ namespace Above
 
 			m_SceneHierarchyPanel.OnImGuiRender();
 
-			ImGui::Begin("Settings");
-			if (m_Square)
-			{
-				auto& squareColor = m_Square.GetComponent<SpriteRendererComponent>().Color;
-				ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
-				ImGui::Separator();
-			}
-
-			ImGui::DragFloat3("Camera transform", glm::value_ptr(m_Camera.GetComponent<TransformComponent>().Transform[3]));
-
-			static bool mainCameraActive = false;
-
-			if (ImGui::Checkbox("Camera A", &mainCameraActive))
-			{
-				m_SecondCamera.GetComponent<CameraComponent>().Primary = mainCameraActive;
-				m_Camera.GetComponent<CameraComponent>().Primary = !mainCameraActive;
-			}
-
-			{
-				auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
-				float orthoSize = camera.GetOrthographicSize();
-				if(ImGui::DragFloat("Second camera ortho size", &orthoSize))
-				{
-					camera.SetOrthographicSize(orthoSize);
-				}
-			}
-			ImGui::Separator();
-
-			ImGui::End();
-			
 			auto stats = Renderer2D::GetStats();
 			ImGui::Begin("Statistics");
 			{
 				ImGui::Text("Renderer2D stats:");
-				ImGui::Text("FPS: %d", (uint32_t)fps);
+				ImGui::Separator();
+				ImGui::Text("FPS: %d (%.2fms frame time)", (uint32_t)fps, (1.f/fps)*1000);
 				ImGui::Text("Draw Calls: %d", stats.Drawcalls);
 				ImGui::Text("Quads: %d", stats.QuadCount);
 				ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
