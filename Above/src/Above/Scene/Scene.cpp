@@ -124,7 +124,7 @@ namespace Above
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{
-		if(m_ViewportWidth > 0.5f && m_ViewportHeight > 0.5f)
+		if(m_ViewportWidth > 0.0f && m_ViewportHeight > 0.0f)
 		{
 			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 		}

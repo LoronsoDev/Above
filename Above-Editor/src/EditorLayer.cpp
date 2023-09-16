@@ -211,11 +211,20 @@ namespace Above
 
 			// Submit the DockSpace
 			ImGuiIO& io = ImGui::GetIO();
+			ImGuiStyle& style = ImGui::GetStyle();
+
+			ImVec2 minWinSize = style.WindowMinSize;
+			style.WindowMinSize.x = 350.0f;
+
 			if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 			{
 				ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 			}
+
+			style.WindowMinSize = minWinSize;
+
+
 			static bool showShaderEdit = false;
 
 			if (ImGui::BeginMenuBar())

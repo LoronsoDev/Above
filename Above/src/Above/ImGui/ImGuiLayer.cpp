@@ -22,6 +22,62 @@ namespace Above
 
 	}
 
+    void ImGuiLayer::SetDarkThemeColors()
+    {
+        auto& colors = ImGui::GetStyle().Colors;
+
+#define RGB888_TO_FLOAT(R,G,B) ImVec4{R/255.f, G/255.f, B/255.f, 1.0f}
+#define rgb(R,G,B) RGB888_TO_FLOAT(R,G,B)
+#define RGB(R,G,B) RGB888_TO_FLOAT(R,G,B)
+
+        colors[ImGuiCol_WindowBg] = RGB(23, 26, 33);
+        colors[ImGuiCol_HeaderHovered] = RGB(102, 192, 244);
+        colors[ImGuiCol_HeaderActive] = RGB(27, 40, 56);
+
+        colors[ImGuiCol_Button] = RGB(42, 71, 94);
+        colors[ImGuiCol_ButtonHovered] = RGB(102, 192, 244);
+        colors[ImGuiCol_ButtonActive] = RGB(27, 40, 56);
+
+        colors[ImGuiCol_FrameBg] = RGB(27, 40, 56);
+        colors[ImGuiCol_FrameBgHovered] = rgb(45, 66, 99);
+        colors[ImGuiCol_FrameBgActive] = rgb(45, 66, 99);
+
+        colors[ImGuiCol_Tab] = RGB(27, 40, 56);
+        colors[ImGuiCol_TabActive] = RGB(102, 192, 244);
+        colors[ImGuiCol_TabHovered] = RGB(199, 213, 224);
+
+        colors[ImGuiCol_TabUnfocused] = RGB(27, 40, 56);
+        colors[ImGuiCol_TabUnfocusedActive] = RGB(42, 71, 94);
+        colors[ImGuiCol_TitleBg] = RGB(27, 40, 56);
+        colors[ImGuiCol_TitleBgActive] = RGB(27, 40, 56);
+        colors[ImGuiCol_TitleBgCollapsed] = RGB(27, 40, 56);
+
+
+        //Steam classic
+        /*colors[ImGuiCol_WindowBg] = RGB(63, 71, 56)
+        colors[ImGuiCol_HeaderHovered] = RGB(76, 88, 68)
+        colors[ImGuiCol_HeaderActive] = RGB(76, 88, 68)
+
+        colors[ImGuiCol_Button] = RGB(76, 88, 68)
+        colors[ImGuiCol_ButtonHovered] = RGB(150, 135, 50)
+        colors[ImGuiCol_ButtonActive] = RGB(150, 135, 50)
+
+        colors[ImGuiCol_FrameBg] = 	RGB(76, 88, 68)
+        colors[ImGuiCol_FrameBgHovered] = rgb(45, 66, 99);
+        colors[ImGuiCol_FrameBgActive] = rgb(45, 66, 99);
+
+        colors[ImGuiCol_Tab] = rgb(236, 219, 186);
+        colors[ImGuiCol_TabActive] = RGB(150, 135, 50)
+        colors[ImGuiCol_TabHovered] = RGB(150, 135, 50)
+
+        colors[ImGuiCol_TabUnfocused] = RGB(239, 246, 238)
+        colors[ImGuiCol_TabUnfocusedActive] = RGB(63, 71, 56)
+        colors[ImGuiCol_TitleBg] = RGB(63, 71, 56)
+        colors[ImGuiCol_TitleBgActive] = RGB(63, 71, 56)
+        colors[ImGuiCol_TitleBgCollapsed] = RGB(63, 71, 56)*/
+    }
+
+
 	void ImGuiLayer::OnAttach()
 	{
         AB_PROFILE_FUNCTION();
@@ -37,6 +93,10 @@ namespace Above
         //io.ConfigViewportsNoAutoMerge = true;
         //io.ConfigViewportsNoTaskBarIcon = true;
 
+        io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/WorkSans/WorkSans-Regular.ttf", 15.0f);
+        io.Fonts->AddFontFromFileTTF("assets/fonts/WorkSans/WorkSans-Bold.ttf", 15.0f);
+        io.Fonts->AddFontFromFileTTF("assets/fonts/WorkSans/WorkSans-MediumItalic.ttf", 15.0f);
+        
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
         //ImGui::StyleColorsLight();
@@ -48,6 +108,8 @@ namespace Above
             style.WindowRounding = 0.0f;
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
+
+        SetDarkThemeColors();
 
         Application& app = Application::Get();
         GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
