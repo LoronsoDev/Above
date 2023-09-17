@@ -124,6 +124,7 @@ namespace Above
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 		s_Data.TextureSlotIndex = 1;
+
 	}
 
 
@@ -380,6 +381,51 @@ namespace Above
 		transform = glm::scale(transform, { size.x, size.y, 1.f });
 
 		DrawQuad(transform, subtexture, tiling, color);
+	}
+
+	void Renderer2D::DrawRenderTarget(uint32_t textureID)
+	{
+		//AB_PROFILE_FUNCTION();
+
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
+
+		const float whiteTexIndex = 0.0f;
+		constexpr glm::vec2 textureCoords[] = { {0.0f, 0.0f}, { 1.0f, 0.0f }, { 1.0f, 1.0f }, {0.f, 1.0f} };
+		const float tilingFactor = 1.0f;
+
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
+
+		glm::vec4 quadVertexPositions[4] = {};
+		quadVertexPositions[0] = glm::vec4{ -1.0f, -1.0f, 0.0f, 1.0f };
+		quadVertexPositions[1] = glm::vec4{ 1.0f, -1.0f, 0.0f, 1.0f };
+		quadVertexPositions[2] = glm::vec4{ 1.0f,  1.0f, 0.0f, 1.0f };
+		quadVertexPositions[3] = glm::vec4{ -1.0f,  1.0f, 0.0f, 1.0f };
+
+		Ref<Shader> postShader = Shader::Create("assets/shaders/PostProcess.glsl");
+		postShader->Bind();
+		postShader->SetTextureSlot(0);
+		postShader->SetInt("u_RenderTexture", textureID);
+
+		glm::mat4 transform = glm::scale(glm::mat4(1), { 0.8f, 0.8f, 0.8f }) * 
+			glm::translate(glm::mat4(1), glm::vec3(0.2,0,0));
+
+		for (size_t i = 0; i < 4; ++i)
+		{
+			s_Data.QuadVertexBufferPtr->Position = quadVertexPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = glm::vec4(1,0,0.8,1.0);
+			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = whiteTexIndex;
+			s_Data.QuadVertexBufferPtr->TexTiling = tilingFactor;
+			s_Data.QuadVertexBufferPtr++;
+		}
+		
+
+		s_Data.QuadIndexCount += 6;
+		++s_Data.Stats.QuadCount;
+
+		//RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 	}
 
 	Renderer2D::Statistics Renderer2D::GetStats()

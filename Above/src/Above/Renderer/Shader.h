@@ -14,6 +14,8 @@ namespace Above
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
+		virtual void SetTextureSlot(int slot) = 0;
+
 		virtual void SetInt(const std::string& name, const int value) = 0;
 		virtual void SetIntArray(const std::string& name, int* values, uint32_t count) = 0;
 		virtual void SetFloat(const std::string& name, const float value) = 0;

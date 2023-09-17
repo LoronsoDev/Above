@@ -78,16 +78,35 @@ namespace Above
 		{
 			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
-			auto group = m_Registry.group<>(entt::get<TransformComponent, SpriteRendererComponent>);
-			for (auto entity : group)
 			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				auto group = m_Registry.group<>(entt::get<TransformComponent, SpriteRendererComponent>);
+				for (auto entity : group)
+				{
+					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+					if (!sprite.Texture)
+						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+					else
+						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Texture);
+				}
+
 			}
 
 			Renderer2D::EndScene();
 		}
+
+		Renderer2D::BeginScene(glm::mat4(1.0f), glm::mat4(1));
+		//Post process, called after rendering everything.
+		{
+			auto group = m_Registry.group<>(entt::get<TransformComponent, RenderTargetComponent>);
+			for (auto entity : group)
+			{
+				auto [transform, renderTarget] = group.get<TransformComponent, RenderTargetComponent>(entity);
+
+				Renderer2D::DrawRenderTarget(renderTarget.RenderTextureID);
+			}
+		}
+		Renderer2D::EndScene();
 	}
 
 
@@ -142,6 +161,11 @@ namespace Above
 
 	template<>
 	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<RenderTargetComponent>(Entity entity, RenderTargetComponent& component)
 	{
 	}
 }

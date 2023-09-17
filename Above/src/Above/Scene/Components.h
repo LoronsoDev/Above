@@ -6,6 +6,9 @@
 #include "SceneCamera.h"
 #include <Above/Scene/ScriptableEntity.h>
 
+#include <Above/Renderer/SubTexture2D.h>
+#include <Above/Renderer/Texture.h>
+
 namespace Above
 {
 	struct TagComponent
@@ -45,13 +48,34 @@ namespace Above
 		}
 	};
 
+	struct RenderTargetComponent
+	{
+		uint32_t RenderTextureID;
+
+		RenderTargetComponent() = default;
+		RenderTargetComponent(const RenderTargetComponent&) = default;
+		RenderTargetComponent(const uint32_t& renderTexID) : RenderTextureID(renderTexID) {}
+	};
+
 	struct SpriteRendererComponent
 	{
+		Ref<Texture2D> Texture;
 		glm::vec4 Color = glm::vec4(1);
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
+		SpriteRendererComponent(const Ref<Texture2D> texture) : Texture(texture) {}
+	};
+
+	struct SpriteTileRendererComponent
+	{
+		Ref<SubTexture2D> texture;
+		glm::vec4 Color = glm::vec4(1);
+
+		SpriteTileRendererComponent() = default;
+		SpriteTileRendererComponent(const SpriteTileRendererComponent&) = default;
+		SpriteTileRendererComponent(const glm::vec4& color) : Color(color) {}
 	};
 
 	struct CameraComponent

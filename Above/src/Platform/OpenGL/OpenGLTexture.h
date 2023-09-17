@@ -9,6 +9,7 @@ namespace Above
 	{
 	public:
 		OpenGLTexture2D(const std::string& path);
+		OpenGLTexture2D(const uint32_t& textureID);
 		OpenGLTexture2D(uint32_t width, uint32_t height);
 		~OpenGLTexture2D();
 		

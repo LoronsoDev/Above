@@ -76,43 +76,6 @@ void Sandbox2D::OnUpdate(Above::Timestep timestep)
 		Above::RenderCommand::SetClearColor({ .1f, .1f, .1f, 1.0f });
 		Above::RenderCommand::Clear();
 	}
-
-#if 0
-	{
-		AB_PROFILE_SCOPE("Render Draw");
-
-		Above::Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-		static float rotation = 0.0f;
-		rotation += timestep * 25.f;
-
-		//Above::Renderer2D::DrawRotatedQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, 45.f, { 0.8f, .2f, .3f, 1.f });
-		Above::Renderer2D::DrawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, { 0.8f, .2f, .3f, 1.f });
-		Above::Renderer2D::DrawRotatedQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, glm::radians(rotation), { 0.2f, .3f, .8f, 1.f });
-		Above::Renderer2D::DrawQuad({ 0.2f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 12.0f, { 0.2f, 0.15f, 0.2f, 1.0f });
-		Above::Renderer2D::DrawRotatedQuad({ -0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 45.f, m_CheckerboardTexture, 1.0f);
-
-		Above::Renderer2D::EndScene();
-
-		Above::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		for (int y = -15; y < 15; y++)
-		{
-			for (int x = -15; x < 15; x++)
-			{
-				float r = (((float)x + 15.f) / 30.f);
-				float g = (((float)y + 15.f) / 30.f);
-				float b = 1.f;
-				float a = 0.8f;
-
-				glm::vec4 color(r, g, b, a);
-				Above::Renderer2D::DrawRotatedQuad({ (float)-y * 0.125f, (float)-x * 0.125f, 0.2f }, { 0.25f, 0.25f }, rotation, m_CheckerboardTexture, 1.0f, color);
-			}
-		}
-
-		Above::Renderer2D::EndScene();
-		}
-#endif
-
 		Above::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 		const int road_length = 5;

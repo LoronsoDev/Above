@@ -43,6 +43,10 @@ namespace Above
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
 
+
+		static void DrawRenderTarget(uint32_t textureID);
+
+
 		//Stats
 		struct Statistics
 		{

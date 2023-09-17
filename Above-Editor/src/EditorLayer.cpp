@@ -36,42 +36,28 @@ namespace Above
 		AB_PROFILE_FUNCTION();
 
 		FramebufferProperties framebufferProps;
+		framebufferProps.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth};
 		framebufferProps.Width = 1280;
 		framebufferProps.Height = 720;
 		m_Framebuffer = Framebuffer::Create(framebufferProps);
-
-		m_CheckerboardTexture = Texture2D::Create("assets/textures/checkerboard.png");
-		m_SpriteSheet = Texture2D::Create("assets/game/textures/tilemap_packed.png");
-
-		m_StreetBottomEdge_ST = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 26,26 }, { 16,16 }, { 1, 1 });
-		m_Street_ST = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 30,27 }, { 16,16 }, { 1, 1 });
-		m_StreetTopEdge_ST = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 26,27 }, { 16,16 }, { 1, 1 });
-
-		m_RoadTopEdge_ST = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 11,7 }, { 16,16 }, { 1, 1 });
-		m_RoadMiddle_ST = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 9,8 }, { 16,16 }, { 1, 1 });
-		m_MainRoad_ST = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 11,8 }, { 16,16 }, { 1, 1 });
-
-		m_MapElements['T'] = m_RoadTopEdge_ST;
-		m_MapElements['M'] = m_RoadMiddle_ST;
-		m_MapElements['R'] = m_MainRoad_ST;
-		m_MapElements['B'] = m_RoadTopEdge_ST;
-
-		m_MapElements['U'] = m_StreetTopEdge_ST;
-		m_MapElements['S'] = m_Street_ST;
-		m_MapElements['D'] = m_StreetBottomEdge_ST;
 
 		m_CameraController.SetZoomLevel(5.00f);
 
 		m_ActiveScene = CreateRef<Scene>();
 
+		uint32_t texID = m_Framebuffer->GetColorAttachmentRendererID(0);
+		Ref<Texture2D> sqTex = Above::Texture2D::Create("assets/textures/checkerboard.png");
+		sqTex->Bind(0);
 		m_Square = m_ActiveScene->CreateEntity("Square");
-		m_Square.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f, 1.0f, 0.8f, 0.7f));
+		m_Square.AddComponent<SpriteRendererComponent>(sqTex);
 
 		auto entity2 = m_ActiveScene->CreateEntity("Green Square");
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
-		auto entity3 = m_ActiveScene->CreateEntity("Blue Square");
-		entity3.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 0.0f, 0.7f, 1.0f));
+		auto renderTargetEntity = m_ActiveScene->CreateEntity("RenderTarget");
+		renderTargetEntity.AddComponent<RenderTargetComponent>(m_Framebuffer->GetColorAttachmentRendererID());
+		renderTargetEntity.GetComponent<TransformComponent>().Translation.z += 0.5f;
+
 
 		m_Camera = m_ActiveScene->CreateEntity("Camera A");
 		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>();
@@ -169,6 +155,10 @@ namespace Above
 		static bool opt_padding = false;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
+		//The framebuffer that is gonna get rendered into the ImGui window
+		uint32_t texID = m_Framebuffer->GetColorAttachmentRendererID(0);
+		static bool visualizeDepth = false;
+
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
 		// because it would be confusing to have two docking targets within each others.
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -249,6 +239,13 @@ namespace Above
 					ImGui::EndMenu();
 				}
 
+				if (ImGui::BeginMenu("VIEW"))
+				{
+					ImGui::Checkbox("Visualize Depth", &visualizeDepth);
+					
+					ImGui::EndMenu();
+				}
+
 
 				ImGui::EndMenuBar();
 
@@ -298,8 +295,12 @@ namespace Above
 			ImVec2 viewportSize = ImGui::GetContentRegionAvail();
 			m_ViewportSize = { viewportSize.x, viewportSize.y };
 
-			uint32_t texID = m_Framebuffer->GetColorAttachmentRendererID();
+			if(visualizeDepth)
+			{
+				texID = m_Framebuffer->GetDepthAttachmentRendererID(0);
+			}
 			ImGui::Image((void*)texID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
+			
 			ImGui::End();
 
 			ImGui::PopStyleVar();

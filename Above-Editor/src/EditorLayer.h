@@ -20,21 +20,9 @@ namespace Above
 	private:
 		OrthographicCameraController m_CameraController;
 
-		//temp
-		Ref<VertexArray> m_SquareVA;
-		Ref<Shader> m_FlatColorShader;
-		Ref<Texture2D> m_CheckerboardTexture;
-		Ref<Texture2D> m_SpriteSheet;
-
-		Ref<SubTexture2D> m_StreetTopEdge_ST;
-		Ref<SubTexture2D> m_Street_ST;
-		Ref<SubTexture2D> m_StreetBottomEdge_ST;
-
-		Ref<SubTexture2D> m_RoadTopEdge_ST;
-		Ref<SubTexture2D> m_MainRoad_ST;
-		Ref<SubTexture2D> m_RoadMiddle_ST;
-
 		Ref<Framebuffer> m_Framebuffer;
+		Ref<Framebuffer> m_PostprocessFramebuffer;
+
 		Ref<Scene> m_ActiveScene;
 
 		Entity m_Square;

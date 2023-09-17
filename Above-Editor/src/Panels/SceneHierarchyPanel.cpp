@@ -386,6 +386,10 @@ namespace Above
 
 			}
 		});
+		DrawComponent<RenderTargetComponent>("Render target", entity, [](auto& component)
+		{
+			ImGui::InputInt("Texture slot", (int*)& component.RenderTextureID);
+		});
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
