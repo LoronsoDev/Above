@@ -20,12 +20,13 @@ IncludeDir["ImGui"] = "Above/vendor/imgui"
 IncludeDir["glm"] = "Above/vendor/glm"
 IncludeDir["stb_image"] = "Above/vendor/stb_image"
 IncludeDir["entt"] = "Above/vendor/entt/include"
+IncludeDir["yaml_cpp"] = "Above/vendor/yaml-cpp/include"
 
 group "Dependencies"
 	include "Above/vendor/Glad"
 	include "Above/vendor/glfw"
 	include "Above/vendor/imgui"
-
+	include "Above/vendor/yaml-cpp"
 group ""
 
 	------------ENGINE PROJECT---------------
@@ -71,6 +72,7 @@ group ""
 			"%{IncludeDir.glm}",
 			"%{IncludeDir.stb_image}",
 			"%{IncludeDir.entt}",
+			"%{IncludeDir.yaml_cpp}",
 		}
 
 		links
@@ -78,6 +80,7 @@ group ""
 			"GLFW",
 			"Glad",
 			"ImGui",
+			"yaml-cpp",
 			"opengl32.lib"
 		}
 		

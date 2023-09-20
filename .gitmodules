@@ -11,3 +11,6 @@
 [submodule "Above/vendor/glm"]
 	path = Above/vendor/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Above/vendor/yaml-cpp"]
+	path = Above/vendor/yaml-cpp
+	url = https://github.com/LoronsoDev/yaml-cpp
