@@ -13,6 +13,8 @@ namespace Above
 		void Invalidate();
 
 		virtual void Resize(uint32_t width, uint32_t height) override;
+		virtual int ReadPixel(uint32_t attachmentIndex, int x, int y) override;
+
 		const FramebufferProperties& GetProperties() const override { return m_FramebufferProps; }
 		uint32_t GetColorAttachmentRendererID(uint32_t index = 0) const override { AB_CORE_ASSERT(index < m_ColorAttachments.size(), "Index not valid"); return m_ColorAttachments[index]; }
 		uint32_t GetDepthAttachmentRendererID(uint32_t index = 0) const override { AB_CORE_ASSERT(m_DepthAttachment, "There is no depth attachment"); return m_DepthAttachment; }

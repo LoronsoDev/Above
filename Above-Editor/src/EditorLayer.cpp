@@ -123,6 +123,19 @@ namespace Above
 		//Update scene
 		m_ActiveScene->OnUpdate(timestep);
 
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= m_ViewportBounds[0].x;
+		my -= m_ViewportBounds[0].y;
+		glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportSize[0];
+		my = viewportSize.y - my;
+		int mouseX = (int)mx;
+		int mouseY = (int)my;
+
+		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+		{
+			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+			AB_CORE_WARN("Pixels = {0}", pixelData);
+		}
 		fps = 1.f / timestep;
 		m_Framebuffer->Unbind();
 	}
@@ -288,6 +301,16 @@ namespace Above
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 
 			ImGui::Begin("Viewport");
+			auto viewportOffset = ImGui::GetCursorPos();
+
+			auto windowSize = ImGui::GetWindowSize();
+			ImVec2 minBound = ImGui::GetWindowPos();
+			minBound.x += viewportOffset.x;
+			minBound.y += viewportOffset.y;
+
+			ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
+			m_ViewportBounds[0] = { minBound.x, minBound.y };
+			m_ViewportBounds[1] = { maxBound.x, maxBound.y };
 
 			m_ViewportFocused = ImGui::IsWindowFocused();
 			m_ViewportHovered = ImGui::IsWindowHovered();

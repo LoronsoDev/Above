@@ -45,8 +45,8 @@ R"(
 )";
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
-
 		glm::vec2 m_ViewportSize = glm::vec2(0.f);
+		glm::vec2 m_ViewportBounds[2];
 
 		// The tilemap we're using has 1036 available tiles
 		std::array<Above::Ref<SubTexture2D>, 'Z'> m_MapElements{};
