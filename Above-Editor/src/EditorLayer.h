@@ -16,14 +16,21 @@ namespace Above
 		void OnUpdate(Timestep timestep) override;
 		void OnImGuiRender() override;
 		void OnEvent(Event& event) override;
+	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+
+		void NewScene();
+		std::string LoadScene();
+		void SaveScene(std::string path);
+		std::string SaveSceneAs();
 
 	private:
 		OrthographicCameraController m_CameraController;
-
 		Ref<Framebuffer> m_Framebuffer;
 		Ref<Framebuffer> m_PostprocessFramebuffer;
 
 		Ref<Scene> m_ActiveScene;
+		std::string savePath;
 
 		Entity m_Square;
 		Entity m_Camera;

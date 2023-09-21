@@ -7,6 +7,8 @@
 
 #include <Above/Scene/SceneSerializer.h>
 
+#include <Above/Utils/PlatformUtils.h>
+
 namespace Above
 {
 	EditorLayer::EditorLayer()
@@ -14,7 +16,6 @@ namespace Above
 		Layer("EditorLayer"),
 		m_CameraController(1280.0f / 720.0f)
 	{
-
 	}
 
 	void EditorLayer::OnAttach()
@@ -22,7 +23,7 @@ namespace Above
 		AB_PROFILE_FUNCTION();
 
 		FramebufferProperties framebufferProps;
-		framebufferProps.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth};
+		framebufferProps.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
 		framebufferProps.Width = 1280;
 		framebufferProps.Height = 720;
 		m_Framebuffer = Framebuffer::Create(framebufferProps);
@@ -44,14 +45,12 @@ namespace Above
 		renderTargetEntity.AddComponent<RenderTargetComponent>(m_Framebuffer->GetColorAttachmentRendererID());
 		renderTargetEntity.GetComponent<TransformComponent>().Translation.z += 0.5f;
 
-
 		m_Camera = m_ActiveScene->CreateEntity("Camera A");
 		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>();
 		cameraComponent.Primary = true;
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& secondCameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
-
 
 		class CameraController : public ScriptableEntity
 		{
@@ -62,14 +61,13 @@ namespace Above
 
 			void OnDestroy()
 			{
-
 			}
 			void OnUpdate(Timestep ts)
 			{
 				auto& translation = GetComponent<TransformComponent>().Translation;
 				float speed = 5.f;
 
-				if(Input::IsKeyPressed(AB_KEY_W))
+				if (Input::IsKeyPressed(AB_KEY_W))
 				{
 					translation.y += speed * ts;
 				}
@@ -86,29 +84,23 @@ namespace Above
 					translation.x += speed * ts;
 				}
 			}
-
-			
 		};
 
 		m_Camera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-		SceneSerializer serializer(m_ActiveScene);
-		serializer.SerializeText("assets/scenes/scene_sample.ab");
 	}
 
 	void EditorLayer::OnDetach()
 	{
 		AB_PROFILE_FUNCTION();
-
 	}
 
 	void EditorLayer::OnUpdate(Timestep timestep)
 	{
 		AB_PROFILE_FUNCTION();
 
-		if(FramebufferProperties fbProps = m_Framebuffer->GetProperties();
+		if (FramebufferProperties fbProps = m_Framebuffer->GetProperties();
 			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
 			(fbProps.Width != m_ViewportSize.x || fbProps.Height != m_ViewportSize.y))
 		{
@@ -121,7 +113,7 @@ namespace Above
 		/*if(m_ViewportFocused)
 			m_CameraController.OnUpdate(timestep);*/
 
-		//render
+			//render
 
 		m_Framebuffer->Bind();
 		Renderer2D::ResetStats();
@@ -203,16 +195,37 @@ namespace Above
 
 			style.WindowMinSize = minWinSize;
 
-
 			static bool showShaderEdit = false;
 
 			if (ImGui::BeginMenuBar())
 			{
 				if (ImGui::BeginMenu("FILE"))
 				{
+					if (ImGui::MenuItem("New", "Ctrl+N"))
+					{
+						NewScene();
+					}
+
+					if (!savePath.empty())
+					{
+						if (ImGui::MenuItem("Save", "Ctrl+S"))
+						{
+							SaveScene(savePath);
+						}
+					}
+					if (ImGui::MenuItem("Save as...", "Ctrl+shift+S"))
+					{
+						SaveSceneAs();
+					}
+					if (ImGui::MenuItem("Load...", "Ctrl+O"))
+					{
+						LoadScene();
+					}
+
 					// Disabling fullscreen would allow the window to be moved to the front of other windows,
 					// which we can't undo at the moment without finer window depth/z control.
 					ImGui::MenuItem("Quit") ? Application::Get().Close() : false;
+					//
 					ImGui::EndMenu();
 				}
 
@@ -220,21 +233,20 @@ namespace Above
 				{
 					// Disabling fullscreen would allow the window to be moved to the front of other windows,
 					// which we can't undo at the moment without finer window depth/z control.
-					
+
 					if (ImGui::MenuItem("Postprocess layer"))
 					{
 						showShaderEdit = true;
-					} 
+					}
 					ImGui::EndMenu();
 				}
 
 				if (ImGui::BeginMenu("VIEW"))
 				{
 					ImGui::Checkbox("Visualize Depth", &visualizeDepth);
-					
+
 					ImGui::EndMenu();
 				}
-
 
 				ImGui::EndMenuBar();
 
@@ -246,13 +258,13 @@ namespace Above
 					{
 					}
 					ImGui::NextColumn();
-					if(ImGui::Button("x"))
+					if (ImGui::Button("x"))
 					{
 						showShaderEdit = false;
 					}
 					ImGui::Columns(1);
 					ImGui::Separator();
-					ImGui::InputTextMultiline("GLSL postprocess input field", shader, IM_ARRAYSIZE(shader), ImVec2(700,300));
+					ImGui::InputTextMultiline("GLSL postprocess input field", shader, IM_ARRAYSIZE(shader), ImVec2(700, 300));
 					ImGui::Separator();
 					ImGui::End();
 				}
@@ -265,7 +277,7 @@ namespace Above
 			{
 				ImGui::Text("Renderer2D stats:");
 				ImGui::Separator();
-				ImGui::Text("FPS: %d (%.2fms frame time)", (uint32_t)fps, (1.f/fps)*1000);
+				ImGui::Text("FPS: %d (%.2fms frame time)", (uint32_t)fps, (1.f / fps) * 1000);
 				ImGui::Text("Draw Calls: %d", stats.Drawcalls);
 				ImGui::Text("Quads: %d", stats.QuadCount);
 				ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
@@ -273,7 +285,7 @@ namespace Above
 			}
 			ImGui::End();
 
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0,0});
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 
 			ImGui::Begin("Viewport");
 
@@ -284,25 +296,107 @@ namespace Above
 			ImVec2 viewportSize = ImGui::GetContentRegionAvail();
 			m_ViewportSize = { viewportSize.x, viewportSize.y };
 
-			if(visualizeDepth)
+			if (visualizeDepth)
 			{
 				texID = m_Framebuffer->GetDepthAttachmentRendererID(0);
 			}
 			ImGui::Image((void*)texID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
-			
+
 			ImGui::End();
 
 			ImGui::PopStyleVar();
-
 		}
 
 		ImGui::End();
-
 	}
 
 	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(AB_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+	}
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		if(e.GetRepeatCount() > 0)
+		{
+			return false;
+		}
+
+		bool ctrl = Input::IsKeyPressed(AB_KEY_RIGHT_CONTROL) || Input::IsKeyPressed(AB_KEY_LEFT_CONTROL);
+		bool shift = Input::IsKeyPressed(AB_KEY_LEFT_SHIFT) || Input::IsKeyPressed(AB_KEY_RIGHT_SHIFT);
+		switch(e.GetKeyCode())
+		{
+		case AB_KEY_N:
+			if (ctrl)
+			{
+				NewScene();
+			}
+			break;
+
+		case AB_KEY_S:
+			if(ctrl && shift)
+			{
+				SaveSceneAs();
+			}
+			else
+			{
+				if(!savePath.empty())
+					SaveScene(savePath);
+			}
+			break;
+
+		case AB_KEY_O:
+			if (ctrl)
+			{
+				LoadScene();
+			}
+			break;
+		}
+		
+	
+		return false;
 	}
 
+	void EditorLayer::NewScene()
+	{
+		m_ActiveScene = CreateRef<Scene>();
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		savePath.clear();
+	}
+
+	std::string EditorLayer::LoadScene()
+	{
+		savePath = FileDialogs::OpenFile("ABOVE scene file (*.ab)\0*.ab\0*.above\0");
+		if (!savePath.empty())
+		{
+			m_ActiveScene = CreateRef<Scene>();
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.DeserializeText(savePath);
+		}
+		return savePath;
+	}
+
+	void EditorLayer::SaveScene(std::string path)
+	{
+		SceneSerializer serializer(m_ActiveScene);
+		serializer.SerializeText(path);
+	}
+
+	std::string EditorLayer::SaveSceneAs()
+	{
+		savePath = FileDialogs::SaveFile("ABOVE scene file (*.ab)\0*.ab\0*.above\0");
+		if (!savePath.empty())
+		{
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.SerializeText(savePath);
+		}
+
+		return savePath;
+	}
 }
