@@ -23,8 +23,8 @@ IncludeDir["entt"] = "Above/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Above/vendor/yaml-cpp/include"
 
 group "Dependencies"
-	include "Above/vendor/Glad"
 	include "Above/vendor/glfw"
+	include "Above/vendor/Glad"
 	include "Above/vendor/imgui"
 	include "Above/vendor/yaml-cpp"
 group ""
@@ -53,7 +53,7 @@ group ""
 			"%{prj.name}/vendor/stb_image/**.cpp",
 			"%{prj.name}/vendor/stb_image/**.h",
 			"%{prj.name}/vendor/glm/glm/**.inl",
-			"%{prj.name}/vendor/glm/glm/**.hpp"
+			"%{prj.name}/vendor/glm/glm/**.hpp",
 		}
 
 		defines

@@ -168,6 +168,9 @@
     <ClInclude Include="src\Above\Scene\SceneCamera.h">
       <Filter>src\Above\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Above\Scene\SceneSerializer.h">
+      <Filter>src\Above\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Above\Scene\ScriptableEntity.h">
       <Filter>src\Above\Scene</Filter>
     </ClInclude>
@@ -1515,6 +1518,9 @@
       <Filter>src\Above\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Above\Scene\SceneCamera.cpp">
+      <Filter>src\Above\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Above\Scene\SceneSerializer.cpp">
       <Filter>src\Above\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
