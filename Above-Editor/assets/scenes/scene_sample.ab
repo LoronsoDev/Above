@@ -1,0 +1,5 @@
+Scene: Untitled Scene
+Entities:
+  - Entity: 7355608
+  - TagComponent
+  - Tag: Camera B

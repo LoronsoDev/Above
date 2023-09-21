@@ -5,21 +5,7 @@
 
 #include <Platform/OpenGL/OpenGLShader.h>
 
-static const char* s_MapTiles =
-
-"SSSSSSSSSSSSSSSSSSSSSSSS"
-"DDDDDDDDDDDDDDDDDDDDDDDD"
-"TTTTTTTTTTTTTTTTTTTTTTTT"
-"RRRRRRRRRRRRRRRRRRRRRRRR"
-"MMMMMMMMMMMMMMMMMMMMMMMM"
-"RRRRRRRRRRRRRRRRRRRRRRRR"
-"BBBBBBBBBBBBBBBBBBBBBBBB"
-"UUUUUUUUUUUUUUUUUUUUUUUU"
-"SSSSSSSSSSSSSSSSSSSSSSSS"
-;
-
-static const uint32_t s_MapWidth = 24;
-static const uint32_t s_MapHeight = strlen(s_MapTiles)/s_MapWidth;
+#include <Above/Scene/SceneSerializer.h>
 
 namespace Above
 {
@@ -107,6 +93,9 @@ namespace Above
 		m_Camera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		SceneSerializer serializer(m_ActiveScene);
+		serializer.SerializeText("assets/scenes/scene_sample.ab");
 	}
 
 	void EditorLayer::OnDetach()
