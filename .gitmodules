@@ -4,7 +4,7 @@
 
 [submodule "Above/vendor/glfw"]
 	path = Above/vendor/glfw
-	url = https://github.com/glfw/glfw
+	url = https://github.com/LoronsoDev/glfw.git
 [submodule "Above/vendor/imgui"]
 	path = Above/vendor/imgui
 	url = https://github.com/Lorenzo0852/Above_imgui.git

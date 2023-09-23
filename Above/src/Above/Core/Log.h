@@ -8,7 +8,7 @@
 
 namespace Above
 {
-	class ABOVE_API Log
+	class Log
 	{
 	public:
 		Log();
