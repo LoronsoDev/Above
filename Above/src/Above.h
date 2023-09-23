@@ -15,6 +15,11 @@
 
 #include "Above/ImGui/ImGuiLayer.h"
 
+#include <Above/Scene/Scene.h>
+#include <Above/Scene/Entity.h>
+#include <Above/Scene/ScriptableEntity.h>
+#include <Above/Scene/Components.h>
+
 //------------------Renderer---------------------------
 
 #include <Above/Renderer/Renderer.h>
@@ -23,7 +28,9 @@
 
 #include <Above/Renderer/Buffer.h>
 #include <Above/Renderer/Shader.h>
+#include <Above/Renderer/Framebuffer.h>
 #include <Above/Renderer/Texture.h>
+#include <Above/Renderer/SubTexture2D.h>
 #include <Above/Renderer/VertexArray.h>
 
 #include <Above/Renderer/OrthographicCamera.h>

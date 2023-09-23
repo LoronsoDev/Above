@@ -5,6 +5,22 @@
 
 #include <Platform/OpenGL/OpenGLShader.h>
 
+static const char* s_MapTiles =
+
+"SSSSSSSSSSSSSSSSSSSSSSSS"
+"DDDDDDDDDDDDDDDDDDDDDDDD"
+"TTTTTTTTTTTTTTTTTTTTTTTT"
+"RRRRRRRRRRRRRRRRRRRRRRRR"
+"MMMMMMMMMMMMMMMMMMMMMMMM"
+"RRRRRRRRRRRRRRRRRRRRRRRR"
+"BBBBBBBBBBBBBBBBBBBBBBBB"
+"UUUUUUUUUUUUUUUUUUUUUUUU"
+"SSSSSSSSSSSSSSSSSSSSSSSS"
+;
+
+static const uint32_t s_MapWidth = 24;
+static const uint32_t s_MapHeight = strlen(s_MapTiles)/s_MapWidth;
+
 Sandbox2D::Sandbox2D()
 	:
 	Layer("Sandbox2D"),
@@ -18,6 +34,26 @@ void Sandbox2D::OnAttach()
 	AB_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = Above::Texture2D::Create("assets/textures/checkerboard.png");
+	m_SpriteSheet = Above::Texture2D::Create("assets/game/textures/tilemap_packed.png");
+
+	m_StreetBottomEdge_ST = Above::SubTexture2D::CreateFromCoords(m_SpriteSheet, {26,26}, {16,16}, {1, 1});
+	m_Street_ST = Above::SubTexture2D::CreateFromCoords(m_SpriteSheet, {30,27}, {16,16}, {1, 1});
+	m_StreetTopEdge_ST = Above::SubTexture2D::CreateFromCoords(m_SpriteSheet, {26,27}, {16,16}, {1, 1});
+
+	m_RoadTopEdge_ST = Above::SubTexture2D::CreateFromCoords(m_SpriteSheet, {11,7}, {16,16}, {1, 1});
+	m_RoadMiddle_ST = Above::SubTexture2D::CreateFromCoords(m_SpriteSheet, {9,8}, {16,16}, {1, 1});
+	m_MainRoad_ST = Above::SubTexture2D::CreateFromCoords(m_SpriteSheet, {11,8}, {16,16}, {1, 1});
+
+	m_MapElements['T'] = m_RoadTopEdge_ST;
+	m_MapElements['M'] = m_RoadMiddle_ST;
+	m_MapElements['R'] = m_MainRoad_ST;
+	m_MapElements['B'] = m_RoadTopEdge_ST;
+
+	m_MapElements['U'] = m_StreetTopEdge_ST;
+	m_MapElements['S'] = m_Street_ST;
+	m_MapElements['D'] = m_StreetBottomEdge_ST;
+
+	m_CameraController.SetZoomLevel(5.00f);
 }
 
 void Sandbox2D::OnDetach()
@@ -29,7 +65,7 @@ void Sandbox2D::OnDetach()
 void Sandbox2D::OnUpdate(Above::Timestep timestep)
 {
 	AB_PROFILE_FUNCTION();
-	
+
 	m_CameraController.OnUpdate(timestep);
 
 	Above::Renderer2D::ResetStats();
@@ -40,57 +76,59 @@ void Sandbox2D::OnUpdate(Above::Timestep timestep)
 		Above::RenderCommand::SetClearColor({ .1f, .1f, .1f, 1.0f });
 		Above::RenderCommand::Clear();
 	}
-
-	{
-		AB_PROFILE_SCOPE("Render Draw");
-
 		Above::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		static float rotation = 0.0f;
-		rotation += timestep * 25.f;
+		const int road_length = 5;
 
-		//Above::Renderer2D::DrawRotatedQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, 45.f, { 0.8f, .2f, .3f, 1.f });
-		Above::Renderer2D::DrawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, { 0.8f, .2f, .3f, 1.f });
-		Above::Renderer2D::DrawRotatedQuad({ 0.5f, -0.5f },  { 0.5f, 0.75f }, glm::radians(rotation), { 0.2f, .3f, .8f, 1.f });
-		Above::Renderer2D::DrawQuad({ 0.2f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 12.0f, { 0.2f, 0.15f, 0.2f, 1.0f });
-		Above::Renderer2D::DrawRotatedQuad({ -0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 45.f, m_CheckerboardTexture, 1.0f);
-
-		Above::Renderer2D::EndScene();
-
-		Above::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		for(int y = -15; y < 15; y++)
+		for(int road_n = 0; road_n < road_length; ++road_n)
 		{
-			for (int x = -15; x < 15; x++)
+			for (int i = 0; i < s_MapHeight * s_MapWidth; ++i)
 			{
-				float r = ( ((float)x + 15.f) / 30.f );
-				float g = ( ((float)y + 15.f) / 30.f );
-				float b = 1.f;
-				float a = 0.8f;
+				glm::vec3 position = { ((s_MapWidth * road_n) - (i % s_MapWidth)), s_MapHeight - (i / s_MapWidth), -i * 0.001f };
+				position -= glm::vec3{ (float)s_MapWidth / 2.f, ((float)s_MapHeight / 2.f),  0.f };
 
-				glm::vec4 color(r, g, b, a);
-				Above::Renderer2D::DrawRotatedQuad({ (float)-y * 0.125f, (float)-x * 0.125f, 0.2f }, { 0.25f, 0.25f }, rotation, m_CheckerboardTexture, 1.0f, color);
+				float rotation = 0.0f;
+
+				switch (s_MapTiles[i])
+				{
+				case 'B': //Road (bottom)
+					rotation = glm::radians(180.f);
+					break;
+				}
+
+				Above::Renderer2D::DrawRotatedQuad(position, { 1.0f, 1.0f }, rotation, m_MapElements[s_MapTiles[i]], 1.0f);
 			}
 		}
+		
 
+		/*Above::Renderer2D::DrawQuad({ position.x, position.y, 0.0f}, {1.0f, 1.0f}, m_Street_ST, 1.0f);
+		Above::Renderer2D::DrawQuad({ position.x, position.y - 1.0f, 0.0f}, {1.0f, 1.0f}, m_StreetBottomEdge_ST, 1.0f);
+		Above::Renderer2D::DrawQuad({ position.x, position.y - 2.0f, 0.0f}, {1.0f, 1.0f}, m_RoadTopEdge_ST, 1.0f);*/
+
+		
+		//Above::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, m_SpriteSheet, 1.0f);
 		Above::Renderer2D::EndScene();
-	}
 }
 
 void Sandbox2D::OnImGuiRender()
 {
 	AB_PROFILE_FUNCTION();
+
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 	ImGui::End();
 
 	auto stats = Above::Renderer2D::GetStats();
 	ImGui::Begin("Statistics");
-	ImGui::Text("Renderer2D stats:");
-	ImGui::Text("Draw Calls: %d:", stats.Drawcalls);
-	ImGui::Text("Quads: %d", stats.QuadCount);
-	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+	{
+		ImGui::Text("Renderer2D stats:");
+		ImGui::Text("Draw Calls: %d:", stats.Drawcalls);
+		ImGui::Text("Quads: %d", stats.QuadCount);
+		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+	}
 	ImGui::End();
+
 }
 
 void Sandbox2D::OnEvent(Above::Event& e)

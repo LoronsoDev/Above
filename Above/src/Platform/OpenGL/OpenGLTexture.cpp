@@ -54,6 +54,22 @@ namespace Above
 		stbi_image_free(data);
 	}
 
+	//Reuses a texture already on cache.
+	OpenGLTexture2D::OpenGLTexture2D(const uint32_t& textureID)
+	{
+		//glTextureStorage2D(textureID, 1, GL_RGBA8, m_Width, m_Height);
+
+		//glTextureParameteri(textureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//glTextureParameteri(textureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		//GLenum textureWrap = GL_REPEAT;
+		//glTextureParameteri(textureID, GL_TEXTURE_WRAP_S, textureWrap);
+		//glTextureParameteri(textureID, GL_TEXTURE_WRAP_T, textureWrap);
+
+		////Upload texture
+		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	}
+
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
 		:
 	m_Width(width),

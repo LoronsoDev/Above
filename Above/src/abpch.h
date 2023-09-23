@@ -2,10 +2,6 @@
 
 //List of precompiled headers here.
 
-#ifdef AB_PLATFORM_WINDOWS
-	#include <Windows.h>
-#endif
-
 #include <iostream>
 #include <memory>
 #include <utility>
@@ -22,3 +18,7 @@
 
 #include "Above/Core/Log.h"
 #include <Above/Debug/Instrumentor.h>
+
+#ifdef AB_PLATFORM_WINDOWS
+#include <Windows.h>
+#endif

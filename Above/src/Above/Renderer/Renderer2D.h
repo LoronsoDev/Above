@@ -1,6 +1,10 @@
 #pragma once
 #include <Above/Renderer/OrthographicCamera.h>
 #include <Above/Renderer/Texture.h>
+#include <Above/Renderer/SubTexture2D.h>
+
+#include <Above/Renderer/Camera.h>
+
 namespace Above
 {
 	class Renderer2D
@@ -9,21 +13,39 @@ namespace Above
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+		static void BeginScene(const OrthographicCamera& camera); // Remove
 		static void EndScene();
 		static void Flush();
 
 		//Primitives
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
+		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
+
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
+		static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1));
+
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
+		static void DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
+
+
 
 		//Defining alternatives with rotation as operations with mat4 can be costly and we want to provide the fastest path possible for the end user/developer.
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color);
+
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
+
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& texture, const float tiling = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
+
+
+		static void DrawRenderTarget(uint32_t textureID);
+
 
 		//Stats
 		struct Statistics

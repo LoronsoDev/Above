@@ -188,6 +188,11 @@ namespace Above
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetTextureSlot(int slot)
+	{
+		
+	}
+
 	void OpenGLShader::SetInt(const std::string& name, const int value)
 	{
 		AB_PROFILE_FUNCTION();

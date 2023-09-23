@@ -5,4 +5,10 @@ bin-int/
 
 	#files
 *.user
+
+Above-Editor/*.json
 Sandbox/*.json
+
+AboveProfiler-*.json
+
+!vendor
