@@ -14,3 +14,6 @@
 [submodule "Above/vendor/yaml-cpp"]
 	path = Above/vendor/yaml-cpp
 	url = https://github.com/LoronsoDev/yaml-cpp
+[submodule "vendor/premake"]
+	path = vendor/premake
+	url = https://github.com/premake/premake-core.git
