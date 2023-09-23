@@ -10,5 +10,3 @@ Above-Editor/*.json
 Sandbox/*.json
 
 AboveProfiler-*.json
-
-!premake5.exe
