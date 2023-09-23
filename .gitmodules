@@ -1,7 +1,6 @@
 [submodule "Above/vendor/spdlog"]
 	path = Above/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-
 [submodule "Above/vendor/glfw"]
 	path = Above/vendor/glfw
 	url = https://github.com/LoronsoDev/glfw.git
