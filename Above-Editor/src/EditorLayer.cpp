@@ -32,18 +32,27 @@ namespace Above
 
 		m_ActiveScene = CreateRef<Scene>();
 
-		uint32_t texID = m_Framebuffer->GetColorAttachmentRendererID(0);
+		//uint32_t texID = m_Framebuffer->GetColorAttachmentRendererID(0);
 		Ref<Texture2D> sqTex = Above::Texture2D::Create("assets/textures/checkerboard.png");
 		sqTex->Bind(0);
 		m_Square = m_ActiveScene->CreateEntity("Square");
 		m_Square.AddComponent<SpriteRendererComponent>(sqTex);
 
+
+		Ref<Texture2D> subTex = Above::Texture2D::Create("assets/textures/tilemap_packed.png");
+		auto st2d = Above::SubTexture2D::CreateFromCoords(subTex, { 26,26 }, { 16,16 }, { 1, 1 });
+
+		subTex->Bind();
+		m_Square = m_ActiveScene->CreateEntity("SquareTex");
+		m_Square.AddComponent<SpriteRendererComponent>(st2d);
+
+
 		auto entity2 = m_ActiveScene->CreateEntity("Green Square");
 		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
-		auto renderTargetEntity = m_ActiveScene->CreateEntity("RenderTarget");
-		renderTargetEntity.AddComponent<RenderTargetComponent>(m_Framebuffer->GetColorAttachmentRendererID());
-		renderTargetEntity.GetComponent<TransformComponent>().Translation.z += 0.5f;
+		//auto renderTargetEntity = m_ActiveScene->CreateEntity("RenderTarget");
+		//renderTargetEntity.AddComponent<RenderTargetComponent>(m_Framebuffer->GetColorAttachmentRendererID());
+		//renderTargetEntity.GetComponent<TransformComponent>().Translation.z += 0.5f;
 
 		m_Camera = m_ActiveScene->CreateEntity("Camera A");
 		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>();
@@ -263,7 +272,7 @@ namespace Above
 
 				ImGui::EndMenuBar();
 
-				if (showShaderEdit)
+				/*if (showShaderEdit)
 				{
 					ImGui::Begin("Postprocess shader");
 					ImGui::Columns(2);
@@ -280,7 +289,7 @@ namespace Above
 					ImGui::InputTextMultiline("GLSL postprocess input field", shader, IM_ARRAYSIZE(shader), ImVec2(700, 300));
 					ImGui::Separator();
 					ImGui::End();
-				}
+				}*/
 			}
 
 			m_SceneHierarchyPanel.OnImGuiRender();
