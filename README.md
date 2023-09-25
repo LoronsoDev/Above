@@ -1,2 +1,2 @@
 # Above
-Above Engine (following Cherno's Hazel series).
+Above Engine (2D).
