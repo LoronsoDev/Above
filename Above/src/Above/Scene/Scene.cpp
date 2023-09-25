@@ -84,10 +84,12 @@ namespace Above
 				{
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-					if (!sprite.Texture)
-						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
-					else
+					if (sprite.Texture)
 						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Texture);
+					else if (sprite.Subtexture)
+						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Subtexture);
+					else
+						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
 				}
 
 			}
