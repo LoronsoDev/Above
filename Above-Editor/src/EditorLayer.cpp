@@ -1,5 +1,7 @@
 #include "EditorLayer.h"
 
+#include <random>
+
 #include "imgui/imgui.h"
 #include "glm/gtc/type_ptr.hpp"
 
@@ -9,13 +11,36 @@
 
 #include <Above/Utils/PlatformUtils.h>
 
+#include "Systems.h"
+
 namespace Above
 {
+	static const char* s_MapTiles =
+
+		"SSSSSSSSSSSSSSSSSSSSSSSS"
+		"DDDDDDDDDDDDDDDDDDDDDDDD"
+		"TTTTTTTTTTTTTTTTTTTTTTTT"
+		"RRRRRRRRRRRRRRRRRRRRRRRR"
+		"MMMMMMMMMMMMMMMMMMMMMMMM"
+		"RRRRRRRRRRRRRRRRRRRRRRRR"
+		"BBBBBBBBBBBBBBBBBBBBBBBB"
+		"UUUUUUUUUUUUUUUUUUUUUUUU"
+		"SSSSSSSSSSSSSSSSSSSSSSSS"
+		;
+
+	static const uint32_t s_MapWidth = 24;
+	static const uint32_t s_MapHeight = strlen(s_MapTiles) / s_MapWidth;
+
 	EditorLayer::EditorLayer()
 		:
 		Layer("EditorLayer"),
 		m_CameraController(1280.0f / 720.0f)
 	{
+	}
+
+	void OnCollisionRegistered(Entity thisEnt, Entity otherEnt)
+	{
+
 	}
 
 	void EditorLayer::OnAttach()
@@ -32,70 +57,172 @@ namespace Above
 
 		m_ActiveScene = CreateRef<Scene>();
 
-		//uint32_t texID = m_Framebuffer->GetColorAttachmentRendererID(0);
-		Ref<Texture2D> sqTex = Above::Texture2D::Create("assets/textures/checkerboard.png");
-		sqTex->Bind(0);
-		m_Square = m_ActiveScene->CreateEntity("Square");
-		m_Square.AddComponent<SpriteRendererComponent>(sqTex);
+		Ref<Texture2D> spriteSheet = Above::Texture2D::Create("assets/textures/tilemap_packed.png");
+		auto st2d = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 26,26 }, { 16,16 }, { 1, 1 });
+
+		spriteSheet->Bind();
+
+		auto streetTop = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 26,27 }, { 16,16 }, { 1, 1 });
+		auto streetMain = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 30,27 }, { 16,16 }, { 1, 1 });
+		auto streetBottom = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 26,26 }, { 16,16 }, { 1, 1 });
+
+		auto roadTop = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 11,7 }, { 16,16 }, { 1, 1 });
+		auto roadMid = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 9,8 }, { 16,16 }, { 1, 1 });
+		auto roadMain = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 11,8 }, { 16,16 }, { 1, 1 });
+
+		auto tree = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 32,16}, { 16,16 }, { 1, 2 });
+		auto lightPole = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 2,9}, { 16,16 }, { 1, 3 });
 
 
-		Ref<Texture2D> subTex = Above::Texture2D::Create("assets/textures/tilemap_packed.png");
-		auto st2d = Above::SubTexture2D::CreateFromCoords(subTex, { 26,26 }, { 16,16 }, { 1, 1 });
+		m_MapElements['T'] = roadTop;
+		m_MapElements['M'] = roadMid;
+		m_MapElements['R'] = roadMain;
+		m_MapElements['B'] = roadTop;
 
-		subTex->Bind();
-		m_Square = m_ActiveScene->CreateEntity("SquareTex");
-		m_Square.AddComponent<SpriteRendererComponent>(st2d);
+		m_MapElements['U'] = streetTop;
+		m_MapElements['S'] = streetMain;
+		m_MapElements['D'] = streetBottom;
+
+		m_MapElements['.'] = tree;
+		m_MapElements['L'] = lightPole;
+
+		const int road_length = 20;
+
+		for (int road_n = 0; road_n < road_length; ++road_n)
+		{
+			for (int i = 0; i < s_MapHeight * s_MapWidth; ++i)
+			{
+				const int x = ((s_MapWidth * road_n) - (i % s_MapWidth));
+				const int y = s_MapHeight - (i / s_MapWidth);
+				const int z = -i * 0.001f;
+				glm::vec3 position = { x, y, z };
+				position -= glm::vec3{ (float)s_MapWidth / 2.f, ((float)s_MapHeight / 1.8f),  0.f };
+
+				float rotation = 0.0f;
+
+				switch (s_MapTiles[i])
+				{
+				case 'B': //Road (bottom)
+					rotation = glm::radians(180.f);
+					break;
+				}
+				
+				auto entity = m_ActiveScene->CreateEntity(std::string("Scenary") + std::to_string(i));
+				entity.AddComponent<SpriteRendererComponent>(m_MapElements[s_MapTiles[i]]);
+				entity.GetComponent<TransformComponent>().Translation = position;
+				entity.GetComponent<TransformComponent>().Rotation = glm::vec3(0.f,0.f,rotation);
+			}
+		}
+
+		//Done again because of painting order
+
+		for (int road_n = 0; road_n < road_length; ++road_n)
+		{
+			for (int i = 0; i < s_MapHeight * s_MapWidth; ++i)
+			{
+				const int x = ((s_MapWidth * road_n) - (i % s_MapWidth));
+				const int y = s_MapHeight - (i / s_MapWidth);
+				const int z = -i * 0.001f;
+				glm::vec3 position = { x, y, z };
+				position -= glm::vec3{ (float)s_MapWidth / 2.f, ((float)s_MapHeight / 1.8f),  0.f };
+
+				float rotation = 0.0f;
+
+				if (s_MapTiles[i] == 'S')
+				{
+					if (i % 3 > 1)
+					{
+						auto tree = m_ActiveScene->CreateEntity(std::string("tree") + std::to_string(i));
+						tree.AddComponent<SpriteRendererComponent>(m_MapElements['.']);
+						tree.GetComponent<TransformComponent>().Translation = position;
+						tree.GetComponent<TransformComponent>().Translation.y *= 1.5f;
+						tree.GetComponent<TransformComponent>().Translation.z += 0.5f;
+						tree.GetComponent<TransformComponent>().Rotation = glm::vec3(0.f, glm::radians(-45.f), glm::radians(-90.f));
+					}
+
+				}
+
+				if (s_MapTiles[i] == 'D')
+				{
+					if (i % 4 > 2)
+					{
+						auto lightPole = m_ActiveScene->CreateEntity(std::string("lightpole") + std::to_string(i));
+						lightPole.AddComponent<SpriteRendererComponent>(m_MapElements['L']);
+						lightPole.GetComponent<TransformComponent>().Translation = position;
+						lightPole.GetComponent<TransformComponent>().Scale.y = 1.5f;
+						lightPole.GetComponent<TransformComponent>().Translation.z += 0.5f;
+						lightPole.GetComponent<TransformComponent>().Rotation = glm::vec3(0.f, glm::radians(-45.f), glm::radians(-90.f));
+					}
+
+				}
+
+				if (s_MapTiles[i] == 'U')
+				{
+					if (i % 4 > 2)
+					{
+						auto lightPole = m_ActiveScene->CreateEntity(std::string("lightpole") + std::to_string(i));
+						lightPole.AddComponent<SpriteRendererComponent>(m_MapElements['L']);
+						lightPole.GetComponent<TransformComponent>().Translation = position;
+						lightPole.GetComponent<TransformComponent>().Scale.y = 1.5f;
+						lightPole.GetComponent<TransformComponent>().Translation.z += 0.5f;
+						lightPole.GetComponent<TransformComponent>().Rotation = glm::vec3(0.f, glm::radians(-45.f), glm::radians(-90.f));
+						lightPole.GetComponent<TransformComponent>().Scale.x = -1;
+					}
+
+				}
+			}
+		}
+
+		auto mapLimit = s_MapWidth + (s_MapWidth * 0.5f);
+
+		auto playerCar = Above::SubTexture2D::CreateFromCoords(spriteSheet, { 31,0 }, { 16,16 }, { 2, 2 });
+
+		m_PlayerCarEntity = m_ActiveScene->CreateEntity("Player car");
+		m_PlayerCarEntity.AddComponent<SpriteRendererComponent>(playerCar);
+		m_PlayerCarEntity.GetComponent<TransformComponent>().Scale.y = 1.3f;
+		glm::vec3 carPos = glm::vec3(-mapLimit + 3.f, 0.f, 0.05f);
+		m_PlayerCarEntity.GetComponent<TransformComponent>().Translation = carPos;
+		m_PlayerCarEntity.GetComponent<TransformComponent>().Rotation.z = glm::radians(-90.f);
+
+		auto enemyCar = SubTexture2D::CreateFromCoords(spriteSheet, { 31,4 }, { 16,16 }, { 2, 2 });
+
+		std::random_device rd; // obtain a random number from hardware
+		std::mt19937 gen(rd()); // seed the generator
+		std::uniform_int_distribution<> distr(-5, 5); // define the range
 
 
-		auto entity2 = m_ActiveScene->CreateEntity("Green Square");
-		entity2.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-
-		//auto renderTargetEntity = m_ActiveScene->CreateEntity("RenderTarget");
-		//renderTargetEntity.AddComponent<RenderTargetComponent>(m_Framebuffer->GetColorAttachmentRendererID());
-		//renderTargetEntity.GetComponent<TransformComponent>().Translation.z += 0.5f;
-
+		glm::vec3 nextEnemyCarPos = glm::vec3(- mapLimit + 20.f, -1.f, 0.4f);
+		const int n_enemy_cars = 145;
+		m_EnemyCarEntities.reserve(n_enemy_cars);
+		for(int i = 0; i < n_enemy_cars; ++i)
+		{
+			auto enemyCarEntity = m_ActiveScene->CreateEntity(std::string("Enemy car ") + std::to_string(i));
+			enemyCarEntity.AddComponent<SpriteRendererComponent>(enemyCar);
+			enemyCarEntity.GetComponent<TransformComponent>().Scale.y = 1.3f;
+			enemyCarEntity.GetComponent<TransformComponent>().Translation = nextEnemyCarPos;
+			enemyCarEntity.GetComponent<TransformComponent>().Rotation.z = glm::radians(90.f);
+			enemyCarEntity.AddComponent<NativeScriptComponent>().Bind<EnemyCarController>();
+			
+			nextEnemyCarPos.x = glm::clamp(nextEnemyCarPos.x, nextEnemyCarPos.x + 3.f, nextEnemyCarPos.x + 13.f + distr(gen));
+			nextEnemyCarPos.y = (distr(gen) % 2 ? -1.f : 1.f) + ((float)distr(gen) * 0.1f);
+			m_EnemyCarEntities.push_back(enemyCarEntity);
+		}
+		
 		m_Camera = m_ActiveScene->CreateEntity("Camera A");
 		auto& cameraComponent = m_Camera.AddComponent<CameraComponent>();
 		cameraComponent.Primary = true;
+		cameraComponent.Camera.SetPerspective(45.f, 0.010f, 1000.f);
+		auto& camTransform = m_Camera.GetComponent<TransformComponent>();
+		camTransform.Translation = glm::vec3(-mapLimit, 0.f, 8.f);
+		camTransform.Rotation = glm::vec3(0.f, glm::radians(-37.5f), glm::radians(-90.f));
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
 		auto& secondCameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
 
-		class CameraController : public ScriptableEntity
-		{
-		public:
-			void OnCreate()
-			{
-			}
-
-			void OnDestroy()
-			{
-			}
-			void OnUpdate(Timestep ts)
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				float speed = 5.f;
-
-				if (Input::IsKeyPressed(AB_KEY_W))
-				{
-					translation.y += speed * ts;
-				}
-				if (Input::IsKeyPressed(AB_KEY_A))
-				{
-					translation.x -= speed * ts;
-				}
-				if (Input::IsKeyPressed(AB_KEY_S))
-				{
-					translation.y -= speed * ts;
-				}
-				if (Input::IsKeyPressed(AB_KEY_D))
-				{
-					translation.x += speed * ts;
-				}
-			}
-		};
+		
 
 		m_Camera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		m_PlayerCarEntity.AddComponent<NativeScriptComponent>().Bind<CarController>();
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
@@ -126,25 +253,71 @@ namespace Above
 
 		m_Framebuffer->Bind();
 		Renderer2D::ResetStats();
-		RenderCommand::SetClearColor({ .1f, .1f, .1f, 1.0f });
+		RenderCommand::SetClearColor({ .3f, .6f, .3f, 1.0f });
 		RenderCommand::Clear();
 
 		//Update scene
 		m_ActiveScene->OnUpdate(timestep);
 
-		auto [mx, my] = ImGui::GetMousePos();
-		mx -= m_ViewportBounds[0].x;
-		my -= m_ViewportBounds[0].y;
-		glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportSize[0];
-		my = viewportSize.y - my;
-		int mouseX = (int)mx;
-		int mouseY = (int)my;
+		static bool playerAlive = true;
+		static int carsHit[3] = {-1, -1, -1};
+		static int carsHitIndex = 0;
+		auto& myTc = m_PlayerCarEntity.GetComponent<TransformComponent>();
+		if (carsHitIndex == 3) playerAlive = false;
 
-		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+		if(playerAlive)
 		{
-			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			AB_CORE_WARN("Pixels = {0}", pixelData);
+			for (int i = 0; i < m_EnemyCarEntities.size(); ++i)
+			{
+				auto& tc = m_EnemyCarEntities[i].GetComponent<TransformComponent>();
+				auto distance = glm::distance(myTc.Translation, tc.Translation);
+				if (distance < 0.75f)
+				{
+					bool exec = true;
+					for (int j = 0; j < 3; j++)
+					{
+						if (carsHit[j] == i)
+						{
+							exec = false;
+						}
+					}
+					if (!exec) continue;
+
+					auto& color = m_PlayerCarEntity.GetComponent<SpriteRendererComponent>().Color;
+					m_EnemyCarEntities[i].RemoveComponent<SpriteRendererComponent>();
+					color.g -= 0.3f;
+					color.b -= 0.3f;
+					AB_ERROR("HIT {0}, distance:{1}", m_EnemyCarEntities[i].GetComponent<TagComponent>().Tag, distance);
+					carsHit[carsHitIndex++] = i;
+				}
+			}
 		}
+
+		if(!playerAlive)
+		{
+			auto& color = m_PlayerCarEntity.GetComponent<SpriteRendererComponent>().Color;
+			color.r = 0.0f;
+			color.g = 0.0f;
+			color.b = 0.0f;
+
+			m_PlayerCarEntity.RemoveComponent<NativeScriptComponent>();
+			CameraController* cc = (CameraController*) m_Camera.GetComponent<NativeScriptComponent>().Instance;
+			cc->speed = glm::clamp(cc->speed, 0.0f, glm::abs(cc->speed - (timestep * 2.f)));
+		}
+
+		//auto [mx, my] = ImGui::GetMousePos();
+		//mx -= m_ViewportBounds[0].x;
+		//my -= m_ViewportBounds[0].y;
+		//glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportSize[0];
+		//my = viewportSize.y - my;
+		//int mouseX = (int)mx;
+		//int mouseY = (int)my;
+
+		//if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+		//{
+		//	int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+		//	//AB_CORE_WARN("Pixels = {0}", pixelData);
+		//}
 		fps = 1.f / timestep;
 		m_Framebuffer->Unbind();
 	}

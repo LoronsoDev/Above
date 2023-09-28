@@ -85,9 +85,9 @@ namespace Above
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
 					if (sprite.Texture)
-						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Texture);
+						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Texture, 1, sprite.Color);
 					else if (sprite.Subtexture)
-						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Subtexture);
+						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Subtexture, 1, sprite.Color);
 					else
 						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
 				}
@@ -97,18 +97,18 @@ namespace Above
 			Renderer2D::EndScene();
 		}
 
-		Renderer2D::BeginScene(glm::mat4(1.0f), glm::mat4(1));
-		//Post process, called after rendering everything.
-		{
-			auto group = m_Registry.group<>(entt::get<TransformComponent, RenderTargetComponent>);
-			for (auto entity : group)
-			{
-				auto [transform, renderTarget] = group.get<TransformComponent, RenderTargetComponent>(entity);
+		//Renderer2D::BeginScene(glm::mat4(1.0f), glm::mat4(1));
+		////Post process, called after rendering everything.
+		//{
+		//	auto group = m_Registry.group<>(entt::get<TransformComponent, RenderTargetComponent>);
+		//	for (auto entity : group)
+		//	{
+		//		auto [transform, renderTarget] = group.get<TransformComponent, RenderTargetComponent>(entity);
 
-				Renderer2D::DrawRenderTarget(renderTarget.RenderTextureID);
-			}
-		}
-		Renderer2D::EndScene();
+		//		Renderer2D::DrawRenderTarget(renderTarget.RenderTextureID);
+		//	}
+		//}
+		//Renderer2D::EndScene();
 	}
 
 
@@ -141,6 +141,7 @@ namespace Above
 	{
 		
 	}
+
 
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)

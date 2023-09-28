@@ -13,7 +13,7 @@ uniform mat4 u_ViewProjection;
 
 out vec2 v_TexCoord;
 out vec4 v_Color;
-out float v_TexIndex;
+flat out float v_TexIndex;
 out float v_TexTiling;
 
 void main()
@@ -33,7 +33,7 @@ layout(location = 0) out vec4 color;
 
 in vec4 v_Color;
 in vec2 v_TexCoord;
-in float v_TexIndex;
+flat in float v_TexIndex;
 in float v_TexTiling;
 
 uniform sampler2D u_Textures[32];
