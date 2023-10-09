@@ -6,4 +6,6 @@ Above Engine
 
 2- Ensure you are on a Windows platform and run "scripts/Win-GenProjects.bat". This will build all the necessary files.
 
+3- Open the vs project generated on the root folder.
+
 ![image](https://github.com/LoronsoDev/Above/assets/6765871/ffca5eb0-9c7e-4c00-bb24-324d9e1ca6c6)
