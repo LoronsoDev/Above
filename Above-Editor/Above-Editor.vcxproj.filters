@@ -10,6 +10,8 @@
     <ClInclude Include="src\Panels\SceneHierarchyPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="src\Systems.h" />
+    <ClInclude Include="src\UserComponents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AboveEditorApp.cpp" />

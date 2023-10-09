@@ -35,18 +35,13 @@ namespace Above
 		Entity m_Square;
 		Entity m_Camera;
 		Entity m_SecondCamera;
-		char shader[1024] = 
-R"(
-#type vertex
-
-#type fragment
-
-
-)";
-
+		
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = glm::vec2(0.f);
 		glm::vec2 m_ViewportBounds[2];
+
+		Entity m_PlayerCarEntity;
+		std::vector<Entity> m_EnemyCarEntities;
 
 		// The tilemap we're using has 1036 available tiles
 		std::array<Above::Ref<SubTexture2D>, 'Z'> m_MapElements{};
