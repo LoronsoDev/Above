@@ -2,7 +2,7 @@
 Above Engine is a game engine for 2D games optimized for rendering big amounts of entities/sprites.
 
 ## Motivation
-Above is a 2D engine built with a strong focus on architecture and optimization, particularly in rendering performance. Drawing on previous experience with both 3D and 2D engines, this project enhances the internal workings of a game engine, emphasizing efficient design patterns and application-wide performance improvements. The goal is to provide not only a powerful engine but also a user-friendly interface that clearly reflects the underlying processes, making complex engine functionality accessible and easy to understand for developers and users alike.
+Above is a 3D engine developed to tackle the challenges of balancing architecture and rendering optimization. After working with other 3D and 2D engines to refine my skills, I found they didn't fully address the need for both high performance and clear, accessible functionality. To solve this, I built Above with a focus on optimizing the rendering pipeline and overall architecture. Now, it offers a powerful engine with an intuitive user experience that allows developers to easily understand and interact with the underlying processes, making complex engine functions more accessible and efficient.
 
 ## How to build
 1- Clone the project and update all its submodules (git clone --recurse-submodules or git submodule update --init --recursive after cloning)
